@@ -60,9 +60,9 @@ var infowindow = new google.maps.InfoWindow();
 
 
 function drawRects () {
-	 var NW=new google.maps.LatLng(55.9223679,-4.4564767)
-	 var width = 50;
-	 var height = 15;
+	 var NW=new google.maps.LatLng(55.938764, -4.534239)
+	 var width = 40;
+	 var height = 20;
 
 	var NS = google.maps.geometry.spherical.computeOffset(NW,1000,90)
 	var SS = google.maps.geometry.spherical.computeOffset(NW,1000,180)
@@ -135,6 +135,7 @@ function drawRects () {
             {% if not session.logged_in %}
             <a href="{{ url_for('login') }}">Log In</a>
             {% else %}
+
             <a href="{{ url_for('logout') }}">log out</a>
             {% endif %}
 
