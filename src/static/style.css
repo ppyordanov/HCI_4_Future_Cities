@@ -14,9 +14,22 @@ html, body{
     width: 100%;
 }
 
-.flash{
+#statusmessage{
+    position:fixed;
+    bottom:0;
+    right:0;
+    width:150px;
+    line-height:30px;
+    color:#FFFFFF;
+    background-color:#81B33A;
+    border-radius:5px;
+    padding:5px;
+    margin:10px;
+    text-align:center;
     z-index: 999;
 }
+
+
 .header{
     height: 100%;
     width: 100%;
@@ -61,4 +74,10 @@ html, body{
     line-height: 1.35;
     overflow: hidden;
     white-space: nowrap;
+}
+
+ .center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
 }

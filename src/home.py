@@ -8,12 +8,13 @@ from werkzeug.utils import secure_filename
 
 
 UPLOAD_FOLDER = '/static/images/user_data/'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['jpg'])
 
 # configuration
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 DATABASE = os.path.join(PROJECT_ROOT, 'DB', 'sg.db')
 SCHEMA = os.path.join(PROJECT_ROOT, 'DB', 'schema.sql')
+POPULATION = os.path.join(PROJECT_ROOT, 'DB', 'population_script.sql')
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -38,6 +39,13 @@ def init_db():
 def before_request():
     g.db = connect_db()
 
+#populate
+def populate_db():
+    with closing(connect_db()) as db:
+        with app.open_resource(POPULATION, mode='r') as f:
+            db.cursor().executescript(f.read())
+        db.commit()
+
 @app.teardown_request
 def teardown_request(exception):
     db = getattr(g, 'db', None)
@@ -53,18 +61,22 @@ def allowed_file(filename):
 @app.route("/")
 def home():
     cur = g.db.execute('select * from photo')
-    photos = [dict(photoID=row[0],userID=row[1], rankID=row[2],time=row[3],latitude=row[4],longitude=row[5],title=row[6],description=row[7]) for row in cur.fetchall()]
+    photos = [dict(photoID=row[0],userID=row[1], rankID=row[2],time=row[3],latitude=row[4],longitude=row[5],title=row[6],description=row[7], square=row[9]) for row in cur.fetchall()]
     return render_template('home.html', photos = photos)
 
 
 @app.route("/update")
 def update():
     return
-	
-@app.route('/upload', methods=['POST'])
+
+
+@app.route("/upload")
+def upload():
+    return render_template('upload.html')
+
+@app.route('/upload_photo', methods=['POST'])
 def upload_photo():
-    if not session.get('logged_in'):
-        abort(401)
+
 
     if request.method == 'POST':
         file = request.files['file']
@@ -104,9 +116,56 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('home'))
-	
+
+@app.route('/dashboard')
+def dashboard():
+    if not session.get('logged_in'):
+        abort(401)
+    flash('personal dashboard')
+    return render_template('dashboard.html')
+
+
+#DB querying
+
+def query_db(query, args=(), one=False):
+    cur = g.db.execute(query, args)
+    rv = [dict((cur.description[idx][0], value)
+               for idx, value in enumerate(row)) for row in cur.fetchall()]
+    return (rv[0] if rv else None) if one else rv
+
+
+def getall_users():
+
+    users = query_db('select * from sys_user ')
+    return users
+
+def getone_user(userid):
+    user = query_db('select * from users where userid = ?',
+                userid, one=True)
+    if user is None:
+        return 'No such user'
+
+    return user
+
+def getall_photos():
+
+    photos = query_db('select * from photos ')
+    return photos
+
+def getone_photo(photoid):
+    photo = query_db('select * from photos where photoid = ?',
+                id, one=True)
+    if photo is None:
+        return 'No such photo'
+
+    return photo
+
+
+
 	
 #run application
 if __name__ == "__main__":
+    init_db()
+    populate_db()
     app.run()
 	

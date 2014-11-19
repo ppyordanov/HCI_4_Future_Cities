@@ -5,12 +5,59 @@
 <h1>Upload</h1>
 
             {% if not session.logged_in %}
+
+                You need to be logged in to upload photos:
+                <br>
+                <br>
             <a href="{{ url_for('login') }}">Log In</a>
+                <br>
+
             <a href="register">register</a>
             {% else %}
 
 
-                CONTENT
+
+
+<form role="form" method=post enctype=multipart/form-data>
+  <div class="form-group">
+    <label for="title">Title</label><br>
+    <input type=text name=title placeholder=title>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label><br>
+    <input type=text placeholder=description>
+  </div>
+
+
+    <div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
+    Weather
+    <span class="caret"></span>
+  </button>
+
+  <ul class="dropdown-menu"  role="menu" aria-labelledby="dropdownMenu1">
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sunny</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Rainy</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Cloudy</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Windy</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Foggy</a></li>
+  </ul>
+
+</div><br>
+
+
+
+ <div class="form-group">
+    <label for="file">File input</label><br>
+    <div align="center"  class="btn btn-default"><input type=file name=file value="Browse"></div>
+    <p class="help-block">Please upload a .jpg</p>
+  </div>
+
+
+
+
+  <button type="submit" class="btn btn-default" name=upload_photo>Submit</button>
+</form>
 
             {% endif %}
 {% endblock %}

@@ -1,27 +1,59 @@
+
+
+var minLatBounds = 55.8634101;
+var maxLatBounds =55.908948;
+var minLonBounds = -4.2709107;
+var maxLonBounds = -4.124655;
+
 var map;
 var infowindow = new google.maps.InfoWindow();
 	var rectArr=[];
-	var cols=["red","blue","green","yellow","orange","gray"]
+	//var color_codings=["red","blue","green","yellow","orange","gray"];
+    var color_codings=["green","gray","yellow"];
 
   function initialize() {
     var rectangle;
-    var coachella = new google.maps.LatLng(33.6803003, -116.173894);
+    var coachella = new google.maps.LatLng(55.8554602,-4.2324586);
     var myOptions = {
       zoom: 12,
+      minZoom: 12,
       center: coachella,
-      mapTypeId: google.maps.MapTypeId.TERRAIN
+      mapTypeId: google.maps.MapTypeId.TERRAIN,
+        disableDefaultUI: true
+
     };
    map = new google.maps.Map(document.getElementById("map_canvas"),
         myOptions);
 	 drawRects();
+
+
+      var frameBorder = new google.maps.LatLngBounds(
+        new google.maps.LatLng(minLatBounds, maxLonBounds),
+        new google.maps.LatLng(maxLatBounds, minLonBounds)
+    );
+
+    var lastCenter = map.getCenter();
+
+    google.maps.event.addListener(map, 'center_changed', function () {
+        if (frameBorder.contains(map.getCenter())) {
+
+            // save last position within specivied bounds
+            lastCenter = map.getCenter();
+            return;
+        }
+
+        map.panTo(lastCenter);
+    });
  	}
 
 
 
+
+
 function drawRects () {
-	 var NW=new google.maps.LatLng(33.7374, -116.39807)
-	 var width = 50;
-	 var height = 15;
+	 var NW=new google.maps.LatLng(55.938764, -4.534239)
+	 var width = 40;
+	 var height = 20;
 
 	var NS = google.maps.geometry.spherical.computeOffset(NW,1000,90)
 	var SS = google.maps.geometry.spherical.computeOffset(NW,1000,180)
@@ -31,13 +63,14 @@ function drawRects () {
 	for (var a = 0; a < width; a++) {
 	var rectangle = new google.maps.Rectangle();
 	var rectOptions = {
-        strokeColor: "#FF0000",
-        strokeOpacity: 0.8,
+        strokeColor: "#81B33A",
+        strokeOpacity: 0.2,
         strokeWeight: 2,
-        fillColor: cols[Math.floor(Math.random()*cols.length)],
-        fillOpacity: 0.35,
+        fillColor: color_codings[Math.floor(Math.random()*color_codings.length)],
+        fillOpacity: 0.2,
         map: map,
         bounds: new google.maps.LatLngBounds(SW,NE)
+
       };
       rectangle.setOptions(rectOptions);
 	  rectArr.push(rectangle);
@@ -50,7 +83,7 @@ function drawRects () {
 	}
 
 	  function bindWindow(rectangle,num){
-	  google.maps.event.addListener(rectangle, 'click', function(event) {
+	  google.maps.event.addListener(rectangle, 'mouseover', function(event) {
 	  	  infowindow.setContent("you clicked on rectangle "+num)
           infowindow.setPosition(event.latLng)
 		  infowindow.open(map);

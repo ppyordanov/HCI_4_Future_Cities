@@ -3,103 +3,12 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bs/css/bootstrap.css') }}">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <script type=text/javascript href="{{ url_for('static', filename='jquery-2.1.1.js') }}"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../static/flash.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.8&libraries=geometry&sensor=false"></script>
 
-<script type="text/javascript">
-
-
-var minLatBounds = 55.8634101;
-var maxLatBounds =55.908948;
-var minLonBounds = -4.2709107;
-var maxLonBounds = -4.124655;
-
-var map;
-var infowindow = new google.maps.InfoWindow();
-	var rectArr=[];
-	//var color_codings=["red","blue","green","yellow","orange","gray"];
-    var color_codings=["green","gray"];
-
-  function initialize() {
-    var rectangle;
-    var coachella = new google.maps.LatLng(55.8554602,-4.2324586);
-    var myOptions = {
-      zoom: 12,
-      minZoom: 12,
-      center: coachella,
-      mapTypeId: google.maps.MapTypeId.TERRAIN,
-        disableDefaultUI: true
-
-    };
-   map = new google.maps.Map(document.getElementById("map_canvas"),
-        myOptions);
-	 drawRects();
-
-
-      var frameBorder = new google.maps.LatLngBounds(
-        new google.maps.LatLng(minLatBounds, maxLonBounds),
-        new google.maps.LatLng(maxLatBounds, minLonBounds)
-    );
-
-    var lastCenter = map.getCenter();
-
-    google.maps.event.addListener(map, 'center_changed', function () {
-        if (frameBorder.contains(map.getCenter())) {
-
-            // save last position within specivied bounds
-            lastCenter = map.getCenter();
-            return;
-        }
-
-        map.panTo(lastCenter);
-    });
- 	}
-
-
-
-
-
-function drawRects () {
-	 var NW=new google.maps.LatLng(55.938764, -4.534239)
-	 var width = 40;
-	 var height = 20;
-
-	var NS = google.maps.geometry.spherical.computeOffset(NW,1000,90)
-	var SS = google.maps.geometry.spherical.computeOffset(NW,1000,180)
-	for (var i = 0; i < height; i++) {
-	NE = google.maps.geometry.spherical.computeOffset(NS,i*1000,180)
-	SW = google.maps.geometry.spherical.computeOffset(SS,i*1000,180)
-	for (var a = 0; a < width; a++) {
-	var rectangle = new google.maps.Rectangle();
-	var rectOptions = {
-        strokeColor: "#81B33A",
-        strokeOpacity: 0.2,
-        strokeWeight: 2,
-        fillColor: color_codings[Math.floor(Math.random()*color_codings.length)],
-        fillOpacity: 0.2,
-        map: map,
-        bounds: new google.maps.LatLngBounds(SW,NE)
-
-      };
-      rectangle.setOptions(rectOptions);
-	  rectArr.push(rectangle);
-	  bindWindow(rectangle,rectArr.length)
-
-	var SW = google.maps.geometry.spherical.computeOffset(SW,1000,90)
-	var NE = google.maps.geometry.spherical.computeOffset(NE,1000,90)
-				}
-		}
-	}
-
-	  function bindWindow(rectangle,num){
-	  google.maps.event.addListener(rectangle, 'click', function(event) {
-	  	  infowindow.setContent("you clicked on rectangle "+num)
-          infowindow.setPosition(event.latLng)
-		  infowindow.open(map);
-        });
-	  }
-
-</script>
 
 
 <nav class="navbar navbar-inverse" role="navigation">
@@ -118,8 +27,8 @@ function drawRects () {
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/statistics">Statistics</a></li>
       </ul>
         <!--
       <form class="navbar-form navbar-left" role="search">
@@ -130,16 +39,15 @@ function drawRects () {
       </form>
       -->
       <ul class="nav navbar-nav navbar-right">
-        <li>
-
+            <li><a href="{{ url_for('upload') }}">Upload</a><li>
             {% if not session.logged_in %}
-            <a href="{{ url_for('login') }}">Log In</a>
+            <li><a href="{{ url_for('login') }}">Log In</a><li>
             {% else %}
-
-            <a href="{{ url_for('logout') }}">log out</a>
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a><li>
+            <li><a href="{{ url_for('logout') }}">log out</a><li>
             {% endif %}
 
-        </li>
+
 
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -148,13 +56,15 @@ function drawRects () {
 
 
 
-<div class="container-fluid text-center">
+<div class="container-fluid text-center center">
 
   {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
+    <div id="statusmessage">{{ message }}</div>
   {% endfor %}
 
   {% block body %}{% endblock %}
+
+
 </div>
 
 
