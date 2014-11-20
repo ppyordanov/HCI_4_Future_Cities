@@ -39,7 +39,7 @@ app.config['UPLOAD_FOLDER'] = os.path.join(PROJECT_ROOT, UPLOAD_FOLDER)
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
-
+con = engine.connect()
 
 
 login_manager = LoginManager()
@@ -61,7 +61,7 @@ def init_db():
 @app.before_request
 def before_request():
     init_db()
-    db_population()
+    #db_population()
     #g.db = connect_db()
 
 '''
@@ -75,7 +75,7 @@ def populate_db():
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    truncate()
+    #truncate()
     db_session.remove()
 
 
@@ -104,9 +104,9 @@ def upload_photo():
 
     if request.method == 'POST':
         file = request.files['file']
+        TYPE = request.form['type']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            TYPE = request.form['type']
             path = os.path.join(app.config['UPLOAD_FOLDER'], request.form['type'], filename)
             file.save(path)
             photo = Photo(0, 'admin', request.form['title'], request.form['description'],path, request.form['square'], TYPE )
@@ -114,7 +114,8 @@ def upload_photo():
             db_session.commit()
             flash('New photo was successfully posted')
             return redirect(url_for('home'))
-    return
+    return render_template('upload.html')
+
 
 
 
