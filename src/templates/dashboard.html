@@ -4,4 +4,15 @@
 
 <h1>Dashboard</h1>
 
+<ul class=entries>
+   <img src="{{ photo }}"> imp
+  {% for photo in bad_photos %}
+    <li><h2>{{photo.title }}</h2>{{ photo.description }}
+        <img src="{{ photo.photo }}">
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+    {{ photos }} photos
+    {{ users }} users
 {% endblock %}

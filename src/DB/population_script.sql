@@ -20,11 +20,26 @@ INSERT INTO SYS_USER VALUES('user4',4,'pass4','hash4','vasko4@gmail.com','ava4',
 INSERT INTO SYS_USER VALUES('user5',5,'pass5','hash5','lisa5@gmail.com','ava5',15,'Lisa','Eldridge');
 
 
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/295.jpg', 1);
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '', 1);
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '', 1);
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '', 1);
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '', 1);
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '', 1);
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '', 1);
-INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '', 1);
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/295.jpg', 295, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/296.jpg', 296, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/297.jpg', 297, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/298.jpg', 298, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/335.jpg', 335, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/337.jpg', 337, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/338.jpg', 338, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/339.jpg', 339, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/377.jpg', 377, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/378.jpg', 378, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'bad weather', '/static/images/user_data/bad/379.jpg', 379, 'bad');
+
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/295.jpg', 295, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/296.jpg', 296, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/297.jpg', 297, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/298.jpg', 298, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/335.jpg', 335, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/337.jpg', 337, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/338.jpg', 338, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/339.jpg', 339, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/377.jpg', 377, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/378.jpg', 378, 'bad');
+INSERT INTO PHOTO VALUES(null,'admin', 0, null, 0.0,0.0,'Glasgow scenery', 'nice weather', '/static/images/user_data/good/379.jpg', 379, 'bad');

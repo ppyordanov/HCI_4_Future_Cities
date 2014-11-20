@@ -39,10 +39,12 @@
       </form>
       -->
       <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('upload') }}">Upload</a><li>
+
             {% if not session.logged_in %}
             <li><a href="{{ url_for('login') }}">Log In</a><li>
+            <li><a href="{{ url_for('register') }}">Register</a><li>
             {% else %}
+            <li><a href="{{ url_for('upload') }}">Upload</a><li>
             <li><a href="{{ url_for('dashboard') }}">Dashboard</a><li>
             <li><a href="{{ url_for('logout') }}">log out</a><li>
             {% endif %}

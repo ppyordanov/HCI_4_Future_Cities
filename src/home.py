@@ -1,10 +1,19 @@
+import contextlib
 import sqlite3
 import os
-from contextlib import closing
-
+from flask.ext.login import *
 from flask import session, g, abort, render_template, flash
-from flask import Flask, request, redirect, url_for
+from flask import Flask, redirect, url_for
+import sqlalchemy
+from flask import request
 from werkzeug.utils import secure_filename
+from register import RegistrationForm
+from login import LoginForm
+from login import *
+
+from population import db_population
+from database import *
+from models import User, Photo
 
 
 UPLOAD_FOLDER = '/static/images/user_data/'
@@ -12,13 +21,15 @@ ALLOWED_EXTENSIONS = set(['jpg'])
 
 # configuration
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
-DATABASE = os.path.join(PROJECT_ROOT, 'DB', 'sg.db')
+DATABASE = os.path.join(PROJECT_ROOT, 'DB', 'sg2.db')
 SCHEMA = os.path.join(PROJECT_ROOT, 'DB', 'schema.sql')
 POPULATION = os.path.join(PROJECT_ROOT, 'DB', 'population_script.sql')
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
+
+
 
 #application
 app = Flask(__name__)
@@ -27,30 +38,45 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
-	
+
+
+
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(userid):
+    return User.get(userid)
+
+'''
 def init_db():
     with closing(connect_db()) as db:
         with app.open_resource(SCHEMA, mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
+'''
 
 #setup		
 @app.before_request
 def before_request():
-    g.db = connect_db()
+    init_db()
+    db_population()
+    #g.db = connect_db()
 
+'''
 #populate
 def populate_db():
     with closing(connect_db()) as db:
         with app.open_resource(POPULATION, mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
+'''
 
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    truncate()
+    db_session.remove()
 
 
 def allowed_file(filename):
@@ -60,9 +86,7 @@ def allowed_file(filename):
 #views
 @app.route("/")
 def home():
-    cur = g.db.execute('select * from photo')
-    photos = [dict(photoID=row[0],userID=row[1], rankID=row[2],time=row[3],latitude=row[4],longitude=row[5],title=row[6],description=row[7], square=row[9]) for row in cur.fetchall()]
-    return render_template('home.html', photos = photos)
+    return render_template('home.html')
 
 
 @app.route("/update")
@@ -95,7 +119,7 @@ def upload_photo():
     return
 
 
-	
+
 	
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -110,6 +134,30 @@ def login():
             flash('You were logged in')
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
+
+'''
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash(u'Successfully logged in as %s' % form.user.username)
+        session['userid'] = form.user.id
+        return redirect(url_for('index'))
+    return render_template('login.html', form=form)
+
+'''
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = User(form.username.data, form.email.data,
+                    form.password.data)
+        db_session.add(user)
+        db_session.commit()
+        flash('Thanks for registering')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
+
 	
 @app.route('/logout')
 def logout():
@@ -117,12 +165,19 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('home'))
 
+@app.route('/statistics')
+def statistics():
+    return render_template('statistics.html')
+
 @app.route('/dashboard')
 def dashboard():
     if not session.get('logged_in'):
         abort(401)
     flash('personal dashboard')
-    return render_template('dashboard.html')
+    good_photos = []
+    users = len(User.query.all())
+    photos =Photo.query.all()
+    return render_template('dashboard.html', good_photos=good_photos, users=users, photos=photos)
 
 
 #DB querying
@@ -133,39 +188,18 @@ def query_db(query, args=(), one=False):
                for idx, value in enumerate(row)) for row in cur.fetchall()]
     return (rv[0] if rv else None) if one else rv
 
+#Truncate database on teardown
+def truncate():
 
-def getall_users():
-
-    users = query_db('select * from sys_user ')
-    return users
-
-def getone_user(userid):
-    user = query_db('select * from users where userid = ?',
-                userid, one=True)
-    if user is None:
-        return 'No such user'
-
-    return user
-
-def getall_photos():
-
-    photos = query_db('select * from photos ')
-    return photos
-
-def getone_photo(photoid):
-    photo = query_db('select * from photos where photoid = ?',
-                id, one=True)
-    if photo is None:
-        return 'No such photo'
-
-    return photo
-
+    with contextlib.closing(engine.connect()) as con:
+        trans = con.begin()
+        for table in reversed(Base.metadata.sorted_tables):
+            con.execute(table.delete())
+        trans.commit()
 
 
 	
 #run application
 if __name__ == "__main__":
-    init_db()
-    populate_db()
     app.run()
 	

@@ -66,6 +66,7 @@ CREATE TABLE PHOTO(
 	description VARCHAR(500),
 	photo VARCHAR(150),
 	square INTEGER,
+  type VARCHAR(4),
 	
 	
 	CONSTRAINT fk_photo FOREIGN KEY (userID)
