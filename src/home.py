@@ -150,8 +150,7 @@ def register():
 
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
-        user = User(form.username.data, form.email.data,
-                    form.password.data)
+        user = User(form.username.data,0,1,form.password.data, form.email.data,None,100,'william','shot')
         db_session.add(user)
         db_session.commit()
         flash('Thanks for registering')
