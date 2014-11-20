@@ -16,7 +16,7 @@ from database import *
 from models import User, Photo
 
 
-UPLOAD_FOLDER = '/static/images/user_data/'
+UPLOAD_FOLDER = 'static/images/user_data/'
 ALLOWED_EXTENSIONS = set(['jpg'])
 
 # configuration
@@ -34,7 +34,7 @@ PASSWORD = 'default'
 #application
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = os.path.join(PROJECT_ROOT, UPLOAD_FOLDER)
 
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
@@ -97,25 +97,23 @@ def update():
 @app.route("/upload")
 def upload():
     return render_template('upload.html')
+    #return render_template('upload.html')
 
 @app.route('/upload_photo', methods=['POST'])
 def upload_photo():
-
 
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(save_path)
-
-            g.db.execute('insert into photo(userID, rankID, time, latitude, longitude, title, description, photo, square) values (admin, 1, null, 0.0, 0.0, ?, ?, ?, ?);',
-                         [request.form['title'], request.form['description'],save_path,request.form['square']])
-            g.db.commit()
-
+            TYPE = request.form['type']
+            path = os.path.join(app.config['UPLOAD_FOLDER'], request.form['type'], filename)
+            file.save(path)
+            photo = Photo(0, 'admin', request.form['title'], request.form['description'],path, request.form['square'], TYPE )
+            db_session.add(photo)
+            db_session.commit()
             flash('New photo was successfully posted')
             return redirect(url_for('home'))
-
     return
 
 
@@ -147,15 +145,19 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-
     form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        user = User(form.username.data,0,1,form.password.data, form.email.data,None,100,'william','shot')
+    return render_template('register.html', form=form)
+
+@app.route('/register_submit', methods=['GET', 'POST'])
+def register_submit():
+
+    if request.method == 'POST':
+        user = User(request.form['username'],0,1,request.form['password'], request.form['username'],None,100,'william','shot')
         db_session.add(user)
         db_session.commit()
         flash('Thanks for registering')
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+    return
 
 	
 @app.route('/logout')
@@ -175,7 +177,7 @@ def dashboard():
     flash('personal dashboard')
     good_photos = []
     users = len(User.query.all())
-    photos =Photo.query.all()
+    photos =len(Photo.query.all())
     return render_template('dashboard.html', good_photos=good_photos, users=users, photos=photos)
 
 

@@ -19,13 +19,13 @@ html, body{
     bottom:0;
     right:0;
     width:200px;
-    line-height:30px;
+    line-height:10px;
     color:#FFFFFF;
     background-color:#81B33A;
     border-radius:5px;
-    padding:5px;
+    padding:10px;
     margin:10px;
-    text-align:center;
+    text-align:left;
     z-index: 999;
 }
 

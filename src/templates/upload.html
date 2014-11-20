@@ -18,35 +18,26 @@
 
 
 
-<form role="form" method=post enctype=multipart/form-data>
+<form role="form" action=/upload_photo method=post enctype=multipart/form-data>
   <div class="form-group">
     <label for="title">Title</label><br>
     <input type=text name=title placeholder=title>
   </div>
   <div class="form-group">
     <label for="description">Description</label><br>
-    <input type=text placeholder=description>
+    <input type=text placeholder=description name=description>
+  </div>
+      <div class="form-group">
+    <label for="square">Square</label><br>
+    <input type=text placeholder=square name=square>
   </div>
 
 
-    <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">
-    Weather
-    <span class="caret"></span>
-  </button>
-
-  <ul class="dropdown-menu"  role="menu" aria-labelledby="dropdownMenu1">
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sunny</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Rainy</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Cloudy</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Windy</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Foggy</a></li>
-  </ul>
-
-</div><br>
+    <input type=checkbox name=type value=good> Good
+      <input type=checkbox name=type value=bad> Bad
 
 
-
+<br><br>
  <div class="form-group">
     <label for="file">File input</label><br>
     <div align="center"  class="btn btn-default"><input type=file name=file value="Browse"></div>
