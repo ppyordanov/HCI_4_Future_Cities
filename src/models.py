@@ -82,6 +82,18 @@ class User(Base):
     def __repr__(self):
         return '<User %r>' % (self.userid)
 
+    def serialize(self):
+        return{
+            'userid':self.userid,
+            'rankid':self.rankid,
+            'achievementid':self.achievementid,
+            'email':self.email,
+            'avatar':self.avatar,
+            'points':self.points,
+            'firstName':self.firstName,
+            'lastName':self.lastName
+        }
+
 class Photo(Base):
     __tablename__ = 'photo'
     photoid = Column(Integer, primary_key=True, autoincrement=True)
@@ -93,7 +105,7 @@ class Photo(Base):
     square = Column(Integer)
     type = Column(String(4))
 
-    def __init__(self, rankid,userid, title, description, photo, square, type):
+    def __init__(self, title, rankid,userid, description, photo, square, type):
         self.title = title
         self.rankid = rankid
         self.description = description
@@ -104,6 +116,17 @@ class Photo(Base):
 
     def __repr__(self):
         return '<Photo %r>' % (self.title)
+
+    def serialize(self):
+        return{
+            'title':self.title,
+            'rankid':self.rankid,
+            'description':self.description,
+            'photo':self.photo,
+            'square':self.square,
+            'type':self.type,
+            'userid':self.userid
+        }
 
 
 

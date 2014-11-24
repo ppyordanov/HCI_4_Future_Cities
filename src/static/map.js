@@ -1,9 +1,9 @@
 
-
-var minLatBounds = 55.8634101;
-var maxLatBounds =55.908948;
-var minLonBounds = -4.2709107;
-var maxLonBounds = -4.124655;
+var minLatBounds = 55.710672;
+var maxLatBounds = 56.019295;
+var minLonBounds = -3.930433;
+var maxLonBounds = -4.701437;
+var centerLocation = new google.maps.LatLng(55.8554602,-4.2324586);
 
 var map;
 var infowindow = new google.maps.InfoWindow();
@@ -11,13 +11,16 @@ var infowindow = new google.maps.InfoWindow();
 	//var color_codings=["red","blue","green","yellow","orange","gray"];
     var color_codings=["green","gray","yellow"];
 
+
+
   function initialize() {
-    var rectangle;
-    var coachella = new google.maps.LatLng(55.8554602,-4.2324586);
+
+    loading_animation();
+
     var myOptions = {
       zoom: 12,
-      minZoom: 12,
-      center: coachella,
+      minZoom: 11,
+      center: centerLocation,
       mapTypeId: google.maps.MapTypeId.TERRAIN,
         disableDefaultUI: true
 
@@ -45,7 +48,6 @@ var infowindow = new google.maps.InfoWindow();
         map.panTo(lastCenter);
     });
  	}
-
 
 
 
@@ -82,10 +84,11 @@ function drawRects () {
 		}
 	}
 
+
 	  function bindWindow(rectangle,num){
 	  google.maps.event.addListener(rectangle, 'mouseover', function(event) {
-	  	  infowindow.setContent("you clicked on rectangle "+num)
-          infowindow.setPosition(event.latLng)
+	  	  infowindow.setContent("Square "+num);
+          infowindow.setPosition(event.latLng);
 		  infowindow.open(map);
         });
 	  }

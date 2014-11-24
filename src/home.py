@@ -2,26 +2,26 @@ import contextlib
 import sqlite3
 import os
 from flask.ext.login import *
-from flask import session, g, abort, render_template, flash
+from flask import session, g, abort, render_template, flash, jsonify
 from flask import Flask, redirect, url_for
 import sqlalchemy
 from flask import request
+from sqlalchemy.dialects.postgresql import json
 from werkzeug.utils import secure_filename
 from register import RegistrationForm
 from login import LoginForm
-from login import *
 
 from population import db_population
 from database import *
 from models import User, Photo
 
 
-UPLOAD_FOLDER = 'static/images/user_data/'
+UPLOAD_FOLDER = 'static\\images\\user_data\\'
 ALLOWED_EXTENSIONS = set(['jpg'])
 
 # configuration
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
-DATABASE = os.path.join(PROJECT_ROOT, 'DB', 'sg2.db')
+DATABASE = os.path.join(PROJECT_ROOT, 'DB', 'sg.db')
 SCHEMA = os.path.join(PROJECT_ROOT, 'DB', 'schema.sql')
 POPULATION = os.path.join(PROJECT_ROOT, 'DB', 'population_script.sql')
 DEBUG = True
@@ -44,6 +44,9 @@ con = engine.connect()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+#Session DATA
+USER_SESSION = {}
 
 @login_manager.user_loader
 def load_user(userid):
@@ -75,7 +78,7 @@ def populate_db():
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    #truncate()
+    USER_SESSION = {} #empty session dictionary
     db_session.remove()
 
 
@@ -86,53 +89,77 @@ def allowed_file(filename):
 #views
 @app.route("/")
 def home():
-    return render_template('home.html')
+    user_list = [user.serialize for user in User.query.all()]
+    photo_list =[photo.serialize for photo in Photo.query.all()]
 
+    return render_template('home.html', photo_list = photo_list, user_list = user_list)
+
+
+
+#RESTful API for DEMO
+@app.route("/get_photos",methods=['GET'])
+def get_photos():
+    if request.method == 'GET':
+        list = [photo.serialize() for photo in Photo.query.all()]
+        return jsonify(results=list)
+
+@app.route("/get_users",methods=['GET'])
+def get_users():
+    if request.method == 'GET':
+        list = [user.serialize() for user in User.query.all()]
+        return jsonify(results=list)
 
 @app.route("/update")
 def update():
     return
 
-
 @app.route("/upload")
 def upload():
     return render_template('upload.html')
-    #return render_template('upload.html')
 
 @app.route('/upload_photo', methods=['POST'])
 def upload_photo():
 
     if request.method == 'POST':
         file = request.files['file']
-        TYPE = request.form['type']
+        type = request.form['type']
+        title = request.form['title']
+        description = request.form['description']
+        square = request.form['square']
+
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            path = os.path.join(app.config['UPLOAD_FOLDER'], request.form['type'], filename)
+            path = os.path.join(app.config['UPLOAD_FOLDER'], request.form['type'], request.form['square'] + '.jpg')
             file.save(path)
-            photo = Photo(0, 'admin', request.form['title'], request.form['description'],path, request.form['square'], TYPE )
+            photo = Photo(0, 'admin',title, description,path, square, type )
             db_session.add(photo)
             db_session.commit()
-            flash('New photo was successfully posted')
+            flash('The new photo was successfully posted.')
             return redirect(url_for('home'))
     return render_template('upload.html')
 
 
 
 
-	
+#No encrypted verification - demonstation purposes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
+        username  = request.form['username']
+        password = request.form['password']
+        if username != app.config['USERNAME']:
             error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
+        elif password != app.config['PASSWORD']:
+            error = 'Invalid password. Please try again!'
         else:
             session['logged_in'] = True
-            flash('You were logged in')
+            USER_SESSION['id'] = username
+            flash('You were successfully logged in.')
             return redirect(url_for('home'))
+
     return render_template('login.html', error=error)
+
 
 '''
     form = LoginForm()
@@ -153,10 +180,10 @@ def register():
 def register_submit():
 
     if request.method == 'POST':
-        user = User(request.form['username'],0,1,request.form['password'], request.form['username'],None,100,'william','shot')
+        user = User(request.form['username'],0,1,request.form['password'], request.form['email'],None,100,'william','shot')
         db_session.add(user)
         db_session.commit()
-        flash('Thanks for registering')
+        flash('Your registration was successful.')
         return redirect(url_for('login'))
     return
 
@@ -164,7 +191,7 @@ def register_submit():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    flash('You were logged out')
+    flash('You have been logged out successfully.')
     return redirect(url_for('home'))
 
 @app.route('/statistics')
@@ -175,7 +202,8 @@ def statistics():
 def dashboard():
     if not session.get('logged_in'):
         abort(401)
-    flash('personal dashboard')
+    user = USER_SESSION['id']
+    flash('Welcome, ' + user)
     good_photos = []
     users = len(User.query.all())
     photos =len(Photo.query.all())

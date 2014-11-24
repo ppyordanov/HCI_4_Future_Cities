@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('sqlite:///DB/sg2.db', convert_unicode=True)
+engine = create_engine('sqlite:///DB/sg.db', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -14,7 +14,7 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 
-#deprecated database engine from previous version of the web application
+#deprecated API version engine from previous version of the web application
 def getall_users():
 
     users =Base.query('select * from sys_user ')

@@ -32,6 +32,7 @@ def db_population():
 
     db_session.commit()
 
+    #bad weather
     db_session.add(Photo('Glasgow scenery',0,0, 'bad weather', '/static/images/user_data/bad/295.jpg', 295, 'bad'))
     db_session.add(Photo('Glasgow scenery',0,1, 'bad weather', '/static/images/user_data/bad/295.jpg', 296, 'bad'))
     db_session.add(Photo('Glasgow scenery',0,2, 'bad weather', '/static/images/user_data/bad/295.jpg', 297, 'bad'))
@@ -44,6 +45,7 @@ def db_population():
     db_session.add(Photo('Glasgow scenery',0,3, 'bad weather', '/static/images/user_data/bad/295.jpg', 378, 'bad'))
     db_session.add(Photo('Glasgow scenery',0,2, 'bad weather', '/static/images/user_data/bad/295.jpg', 379, 'bad'))
 
+    #good weather
     db_session.add(Photo('Glasgow scenery',4,1, 'good weather', '/static/images/user_data/good/295.jpg', 295, 'good'))
     db_session.add(Photo('Glasgow scenery',3,3, 'good weather', '/static/images/user_data/good/295.jpg', 296, 'good'))
     db_session.add(Photo('Glasgow scenery',2,3, 'good weather', '/static/images/user_data/good/295.jpg', 297, 'good'))
