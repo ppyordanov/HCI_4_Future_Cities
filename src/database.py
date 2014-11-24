@@ -9,38 +9,41 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 Base = declarative_base()
 Base.query = db_session.query_property()
 
+
 def init_db():
     from models import User, Photo
+
     Base.metadata.create_all(bind=engine)
 
 
-#deprecated API version engine from previous version of the web application
+# deprecated API version engine from previous version of the web application
 def getall_users():
-
-    users =Base.query('select * from sys_user ')
+    users = Base.query('select * from sys_user ')
     return users
+
 
 def getone_user(userid):
     user = Base.query('select * from sys_user where userid = ?',
-        [userid,], one=True)
+                      [userid, ], one=True)
     if user is None:
         return 'No such user'
 
     return user
 
-def getall_photos():
 
+def getall_photos():
     photos = Base.query('select * from photo ')
     return photos
 
-def getall_type_photos(type):
 
+def getall_type_photos(type):
     photos = Base.query('select * from photo where type = ?', [type], one=True)
     return photos
 
+
 def getone_photo_location(square):
     photo = Base.query('select photo from photo where square = ?',
-        [square], one=True)
+                       [square], one=True)
     if photo is None:
         return 'No such photo'
 

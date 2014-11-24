@@ -14,7 +14,7 @@ PASSWORD = 'default'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-#app.config.from_envvar('SUNGLASGOW_SETTINGS', silent=True)
+# app.config.from_envvar('SUNGLASGOW_SETTINGS', silent=True)
 
 
 def connect_db():
@@ -27,15 +27,18 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
+
 @app.before_request
 def before_request():
     g.db = connect_db()
+
 
 @app.teardown_request
 def teardown_request(exception):
     db = getattr(g, 'db', None)
     if db is not None:
         db.close()
+
 
 @app.route('/')
 def show_entries():
@@ -54,6 +57,7 @@ def add_entry():
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -67,6 +71,7 @@ def login():
             flash('Success!Welcome to SunnyGlasgow!')
             return redirect(url_for('show_entries'))
     return render_template('login.html', error=error)
+
 
 @app.route('/logout')
 def logout():

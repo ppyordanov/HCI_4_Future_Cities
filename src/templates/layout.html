@@ -8,64 +8,71 @@
 <script type="text/javascript" src="../static/loading.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.8&libraries=geometry&sensor=false"></script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?v=3.8&libraries=geometry&sensor=false"></script>
 
 
 <nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">Sunny Glasgow</a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="/statistics">Statistics</a></li>
-      </ul>
-        <!--
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Sunny Glasgow</a>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-      -->
-      <ul class="nav navbar-nav navbar-right">
 
-            {% if not session.logged_in %}
-            <li><a href="{{ url_for('login') }}">Log In</a><li>
-            <li><a href="{{ url_for('register') }}">Register</a><li>
-            {% else %}
-            <li><a href="{{ url_for('upload') }}">Upload</a><li>
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a><li>
-            <li><a href="{{ url_for('logout') }}">log out</a><li>
-            {% endif %}
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/statistics">Statistics</a></li>
+            </ul>
+            <!--
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          -->
+            <ul class="nav navbar-nav navbar-right">
+
+                {% if not session.logged_in %}
+                    <li><a href="{{ url_for('login') }}">Log In</a>
+                    <li>
+                    <li><a href="{{ url_for('register') }}">Register</a>
+                    <li>
+                        {% else %}
+                    <li><a href="{{ url_for('upload') }}">Upload</a>
+                    <li>
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <li>
+                    <li><a href="{{ url_for('logout') }}">log out</a>
+                    <li>
+                {% endif %}
 
 
-
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
 </nav>
-
 
 
 <div class="container-fluid text-center center">
 
 
-  {% for message in get_flashed_messages() %}
-    <div id="statusmessage">{{ message }}</div>
-  {% endfor %}
+    {% for message in get_flashed_messages() %}
+        <div id="statusmessage">{{ message }}</div>
+    {% endfor %}
 
-  {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
 
 
 </div>

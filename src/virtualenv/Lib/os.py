@@ -21,7 +21,7 @@ and opendir), and leave all pathname manipulation to os.path
 (e.g., split and join).
 """
 
-#'
+# '
 
 import sys, errno
 
@@ -32,16 +32,19 @@ __all__ = ["altsep", "curdir", "pardir", "sep", "extsep", "pathsep", "linesep",
            "defpath", "name", "path", "devnull",
            "SEEK_SET", "SEEK_CUR", "SEEK_END"]
 
+
 def _get_exports_list(module):
     try:
         return list(module.__all__)
     except AttributeError:
         return [n for n in dir(module) if n[0] != '_']
 
+
 if 'posix' in _names:
     name = 'posix'
     linesep = '\n'
     from posix import *
+
     try:
         from posix import _exit
     except ImportError:
@@ -49,6 +52,7 @@ if 'posix' in _names:
     import posixpath as path
 
     import posix
+
     __all__.extend(_get_exports_list(posix))
     del posix
 
@@ -56,6 +60,7 @@ elif 'nt' in _names:
     name = 'nt'
     linesep = '\r\n'
     from nt import *
+
     try:
         from nt import _exit
     except ImportError:
@@ -63,6 +68,7 @@ elif 'nt' in _names:
     import ntpath as path
 
     import nt
+
     __all__.extend(_get_exports_list(nt))
     del nt
 
@@ -70,6 +76,7 @@ elif 'os2' in _names:
     name = 'os2'
     linesep = '\r\n'
     from os2 import *
+
     try:
         from os2 import _exit
     except ImportError:
@@ -81,6 +88,7 @@ elif 'os2' in _names:
         from _emx_link import link
 
     import os2
+
     __all__.extend(_get_exports_list(os2))
     del os2
 
@@ -88,6 +96,7 @@ elif 'ce' in _names:
     name = 'ce'
     linesep = '\r\n'
     from ce import *
+
     try:
         from ce import _exit
     except ImportError:
@@ -96,6 +105,7 @@ elif 'ce' in _names:
     import ntpath as path
 
     import ce
+
     __all__.extend(_get_exports_list(ce))
     del ce
 
@@ -103,6 +113,7 @@ elif 'riscos' in _names:
     name = 'riscos'
     linesep = '\n'
     from riscos import *
+
     try:
         from riscos import _exit
     except ImportError:
@@ -110,6 +121,7 @@ elif 'riscos' in _names:
     import riscospath as path
 
     import riscos
+
     __all__.extend(_get_exports_list(riscos))
     del riscos
 
@@ -118,7 +130,7 @@ else:
 
 sys.modules['os.path'] = path
 from os.path import (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
-    devnull)
+                     devnull)
 
 del _names
 
@@ -152,9 +164,10 @@ def makedirs(name, mode=0777):
             # be happy if someone already created the path
             if e.errno != errno.EEXIST:
                 raise
-        if tail == curdir:           # xxx/newdir/. exists if xxx/newdir exists
+        if tail == curdir:  # xxx/newdir/. exists if xxx/newdir exists
             return
     mkdir(name, mode)
+
 
 def removedirs(name):
     """removedirs(path)
@@ -177,6 +190,7 @@ def removedirs(name):
         except error:
             break
         head, tail = path.split(head)
+
 
 def renames(old, new):
     """renames(old, new)
@@ -204,7 +218,9 @@ def renames(old, new):
         except error:
             pass
 
+
 __all__.extend(["makedirs", "removedirs", "renames"])
+
 
 def walk(top, topdown=True, onerror=None, followlinks=False):
     """Directory tree generator.
@@ -298,6 +314,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
     if not topdown:
         yield top, dirs, nondirs
 
+
 __all__.append("walk")
 
 # Make sure os.environ exists, at least
@@ -306,12 +323,14 @@ try:
 except NameError:
     environ = {}
 
+
 def execl(file, *args):
     """execl(file, *args)
 
     Execute the executable file with argument list args, replacing the
     current process. """
     execv(file, args)
+
 
 def execle(file, *args):
     """execle(file, *args, env)
@@ -321,12 +340,14 @@ def execle(file, *args):
     env = args[-1]
     execve(file, args[:-1], env)
 
+
 def execlp(file, *args):
     """execlp(file, *args)
 
     Execute the executable file (which is searched for along $PATH)
     with argument list args, replacing the current process. """
     execvp(file, args)
+
 
 def execlpe(file, *args):
     """execlpe(file, *args, env)
@@ -337,6 +358,7 @@ def execlpe(file, *args):
     env = args[-1]
     execvpe(file, args[:-1], env)
 
+
 def execvp(file, args):
     """execvp(file, args)
 
@@ -344,6 +366,7 @@ def execvp(file, args):
     with argument list args, replacing the current process.
     args may be a list or tuple of strings. """
     _execvpe(file, args)
+
 
 def execvpe(file, args, env):
     """execvpe(file, args, env)
@@ -354,7 +377,9 @@ def execvpe(file, args, env):
     args may be a list or tuple of strings. """
     _execvpe(file, args, env)
 
-__all__.extend(["execl","execle","execlp","execlpe","execvp","execvpe"])
+
+__all__.extend(["execl", "execle", "execlp", "execlpe", "execvp", "execvpe"])
+
 
 def _execvpe(file, args, env=None):
     if env is not None:
@@ -418,11 +443,14 @@ else:
                 data = self.data
                 for k, v in environ.items():
                     data[k.upper()] = v
+
             def __setitem__(self, key, item):
                 putenv(key, item)
                 self.data[key.upper()] = item
+
             def __getitem__(self, key):
                 return self.data[key.upper()]
+
             try:
                 unsetenv
             except NameError:
@@ -432,19 +460,25 @@ else:
                 def __delitem__(self, key):
                     unsetenv(key)
                     del self.data[key.upper()]
+
                 def clear(self):
                     for key in self.data.keys():
                         unsetenv(key)
                         del self.data[key]
+
                 def pop(self, key, *args):
                     unsetenv(key)
                     return self.data.pop(key.upper(), *args)
+
             def has_key(self, key):
                 return key.upper() in self.data
+
             def __contains__(self, key):
                 return key.upper() in self.data
+
             def get(self, key, failobj=None):
                 return self.data.get(key.upper(), failobj)
+
             def update(self, dict=None, **kwargs):
                 if dict:
                     try:
@@ -461,6 +495,7 @@ else:
                             self[k] = dict[k]
                 if kwargs:
                     self.update(kwargs)
+
             def copy(self):
                 return dict(self)
 
@@ -469,10 +504,12 @@ else:
             def __init__(self, environ):
                 UserDict.UserDict.__init__(self)
                 self.data = environ
+
             def __setitem__(self, key, item):
                 putenv(key, item)
                 self.data[key] = item
-            def update(self,  dict=None, **kwargs):
+
+            def update(self, dict=None, **kwargs):
                 if dict:
                     try:
                         keys = dict.keys()
@@ -488,6 +525,7 @@ else:
                             self[k] = dict[k]
                 if kwargs:
                     self.update(kwargs)
+
             try:
                 unsetenv
             except NameError:
@@ -496,24 +534,30 @@ else:
                 def __delitem__(self, key):
                     unsetenv(key)
                     del self.data[key]
+
                 def clear(self):
                     for key in self.data.keys():
                         unsetenv(key)
                         del self.data[key]
+
                 def pop(self, key, *args):
                     unsetenv(key)
                     return self.data.pop(key, *args)
+
             def copy(self):
                 return dict(self)
 
-
     environ = _Environ(environ)
+
 
 def getenv(key, default=None):
     """Get an environment variable, return None if it doesn't exist.
     The optional second argument can specify an alternate default."""
     return environ.get(key, default)
+
+
 __all__.append("getenv")
+
 
 def _exists(name):
     return name in globals()
@@ -543,7 +587,7 @@ if _exists("fork") and not _exists("spawnv") and _exists("execv"):
         else:
             # Parent
             if mode == P_NOWAIT:
-                return pid # Caller is responsible for waiting!
+                return pid  # Caller is responsible for waiting!
             while 1:
                 wpid, sts = waitpid(pid, 0)
                 if WIFSTOPPED(sts):
@@ -621,8 +665,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
         return spawnve(mode, file, args[:-1], env)
 
 
-    __all__.extend(["spawnv", "spawnve", "spawnl", "spawnle",])
-
+    __all__.extend(["spawnv", "spawnve", "spawnl", "spawnle", ])
 
 if _exists("spawnvp"):
     # At the moment, Windows doesn't implement spawnvp[e],
@@ -649,7 +692,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
         return spawnvpe(mode, file, args[:-1], env)
 
 
-    __all__.extend(["spawnvp", "spawnvpe", "spawnlp", "spawnlpe",])
+    __all__.extend(["spawnvp", "spawnvpe", "spawnlp", "spawnlpe", ])
 
 
 # Supply popen2 etc. (for Unix)
@@ -663,15 +706,18 @@ if _exists("fork"):
             'bufsize' is specified, it sets the buffer size for the I/O pipes.  The
             file objects (child_stdin, child_stdout) are returned."""
             import warnings
+
             msg = "os.popen2 is deprecated.  Use the subprocess module."
             warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
             import subprocess
+
             PIPE = subprocess.PIPE
             p = subprocess.Popen(cmd, shell=isinstance(cmd, basestring),
                                  bufsize=bufsize, stdin=PIPE, stdout=PIPE,
                                  close_fds=True)
             return p.stdin, p.stdout
+
         __all__.append("popen2")
 
     if not _exists("popen3"):
@@ -683,15 +729,18 @@ if _exists("fork"):
             'bufsize' is specified, it sets the buffer size for the I/O pipes.  The
             file objects (child_stdin, child_stdout, child_stderr) are returned."""
             import warnings
+
             msg = "os.popen3 is deprecated.  Use the subprocess module."
             warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
             import subprocess
+
             PIPE = subprocess.PIPE
             p = subprocess.Popen(cmd, shell=isinstance(cmd, basestring),
                                  bufsize=bufsize, stdin=PIPE, stdout=PIPE,
                                  stderr=PIPE, close_fds=True)
             return p.stdin, p.stdout, p.stderr
+
         __all__.append("popen3")
 
     if not _exists("popen4"):
@@ -703,40 +752,49 @@ if _exists("fork"):
             'bufsize' is specified, it sets the buffer size for the I/O pipes.  The
             file objects (child_stdin, child_stdout_stderr) are returned."""
             import warnings
+
             msg = "os.popen4 is deprecated.  Use the subprocess module."
             warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
             import subprocess
+
             PIPE = subprocess.PIPE
             p = subprocess.Popen(cmd, shell=isinstance(cmd, basestring),
                                  bufsize=bufsize, stdin=PIPE, stdout=PIPE,
                                  stderr=subprocess.STDOUT, close_fds=True)
             return p.stdin, p.stdout
+
         __all__.append("popen4")
 
 import copy_reg as _copy_reg
 
+
 def _make_stat_result(tup, dict):
     return stat_result(tup, dict)
+
 
 def _pickle_stat_result(sr):
     (type, args) = sr.__reduce__()
     return (_make_stat_result, args)
 
+
 try:
     _copy_reg.pickle(stat_result, _pickle_stat_result, _make_stat_result)
-except NameError: # stat_result may not exist
+except NameError:  # stat_result may not exist
     pass
+
 
 def _make_statvfs_result(tup, dict):
     return statvfs_result(tup, dict)
+
 
 def _pickle_statvfs_result(sr):
     (type, args) = sr.__reduce__()
     return (_make_statvfs_result, args)
 
+
 try:
     _copy_reg.pickle(statvfs_result, _pickle_statvfs_result,
                      _make_statvfs_result)
-except NameError: # statvfs_result may not exist
+except NameError:  # statvfs_result may not exist
     pass

@@ -11,6 +11,7 @@ __all__ = ["pickle", "constructor",
 
 dispatch_table = {}
 
+
 def pickle(ob_type, pickle_function, constructor_ob=None):
     if type(ob_type) is _ClassType:
         raise TypeError("copy_reg is not intended for use with classes")
@@ -23,6 +24,7 @@ def pickle(ob_type, pickle_function, constructor_ob=None):
     # There is no reason for the caller to pass it anymore.
     if constructor_ob is not None:
         constructor(constructor_ob)
+
 
 def constructor(object):
     if not hasattr(object, '__call__'):
@@ -52,7 +54,8 @@ def _reconstructor(cls, base, state):
             base.__init__(obj, state)
     return obj
 
-_HEAPTYPE = 1<<9
+
+_HEAPTYPE = 1 << 9
 
 # Python code for object.__reduce_ex__ for protocols 0 and 1
 
@@ -62,7 +65,7 @@ def _reduce_ex(self, proto):
         if hasattr(base, '__flags__') and not base.__flags__ & _HEAPTYPE:
             break
     else:
-        base = object # not really reachable
+        base = object  # not really reachable
     if base is object:
         state = None
     else:
@@ -87,10 +90,12 @@ def _reduce_ex(self, proto):
     else:
         return _reconstructor, args
 
+
 # Helper for __reduce_ex__ protocol 2
 
 def __newobj__(cls, *args):
     return cls.__new__(cls, *args)
+
 
 def _slotnames(cls):
     """Return a list of slot names for a given class.
@@ -135,7 +140,7 @@ def _slotnames(cls):
     try:
         cls.__slotnames__ = names
     except:
-        pass # But don't die if we can't
+        pass  # But don't die if we can't
 
     return names
 
@@ -148,9 +153,9 @@ def _slotnames(cls):
 # don't have this restriction.)  Codes are positive ints; 0 is
 # reserved.
 
-_extension_registry = {}                # key -> code
-_inverted_registry = {}                 # code -> key
-_extension_cache = {}                   # code -> object
+_extension_registry = {}  # key -> code
+_inverted_registry = {}  # code -> key
+_extension_cache = {}  # code -> object
 # Don't ever rebind those names:  cPickle grabs a reference to them when
 # it's initialized, and won't see a rebinding.
 
@@ -161,8 +166,8 @@ def add_extension(module, name, code):
         raise ValueError, "code out of range"
     key = (module, name)
     if (_extension_registry.get(key) == code and
-        _inverted_registry.get(code) == key):
-        return # Redundant registrations are benign
+                _inverted_registry.get(code) == key):
+        return  # Redundant registrations are benign
     if key in _extension_registry:
         raise ValueError("key %s is already registered with code %s" %
                          (key, _extension_registry[key]))
@@ -172,17 +177,19 @@ def add_extension(module, name, code):
     _extension_registry[key] = code
     _inverted_registry[code] = key
 
+
 def remove_extension(module, name, code):
     """Unregister an extension code.  For testing only."""
     key = (module, name)
     if (_extension_registry.get(key) != code or
-        _inverted_registry.get(code) != key):
+                _inverted_registry.get(code) != key):
         raise ValueError("key %s is not registered with code %s" %
                          (key, code))
     del _extension_registry[key]
     del _inverted_registry[code]
     if code in _extension_cache:
         del _extension_cache[code]
+
 
 def clear_extension_cache():
     _extension_cache.clear()
@@ -192,7 +199,7 @@ def clear_extension_cache():
 # Reserved ranges
 
 # First  Last Count  Purpose
-#     1   127   127  Reserved for Python standard library
+# 1   127   127  Reserved for Python standard library
 #   128   191    64  Reserved for Zope
 #   192   239    48  Reserved for 3rd parties
 #   240   255    16  Reserved for private use (will never be assigned)

@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from database import Base
 
 from werkzeug.security import generate_password_hash, \
-     check_password_hash
+    check_password_hash
 
 
 class Weather(Base):
@@ -11,11 +11,12 @@ class Weather(Base):
     weatherid = Column(Integer, primary_key=True, autoincrement=True)
     type = Column(String(50))
 
-    def __init__(self,type):
+    def __init__(self, type):
         self.type = type
 
     def __repr__(self):
         return '<Weather %r>' % (self.title)
+
 
 class Achievement(Base):
     __tablename__ = 'achievement'
@@ -23,11 +24,12 @@ class Achievement(Base):
     title = Column(String(50))
     description = Column(String(200))
 
-    #achievements = relationship('user_achievement', backref='achievement', lazy='dynamic')
+    # achievements = relationship('user_achievement', backref='achievement', lazy='dynamic')
 
-    def __init__(self,title, description):
+    def __init__(self, title, description):
         self.title = title
-        self.description =description
+        self.description = description
+
     def __repr__(self):
         return '<Achievement %r>' % (self.title)
 
@@ -38,7 +40,7 @@ class Rank(Base):
     positiveVotes = Column(Integer, default=0)
     negativeVotes = Column(Integer, default=0)
 
-    def __init__(self,positiveVotes, negativeVotes):
+    def __init__(self, positiveVotes, negativeVotes):
         self.positiveVotes = positiveVotes
         self.negativeVotes = negativeVotes
 
@@ -47,7 +49,6 @@ class Rank(Base):
 
 
 class User(Base):
-
     def set_password(self, password):
         self.pw_hash = generate_password_hash(password)
 
@@ -65,10 +66,11 @@ class User(Base):
     firstName = Column(String(50))
     lastName = Column(String(50))
 
-   #photos = relationship('photo', backref='sys_user', lazy='dynamic')
-   # achievements = relationship('user_achievement', backref='sys_user', lazy='dynamic')
+    # photos = relationship('photo', backref='sys_user', lazy='dynamic')
+    # achievements = relationship('user_achievement', backref='sys_user', lazy='dynamic')
 
-    def __init__(self, userid=None, rankid=None, achievementid=None, password=None, email=None, avatar=None, points=None, firstName=None, lastName=None):
+    def __init__(self, userid=None, rankid=None, achievementid=None, password=None, email=None, avatar=None,
+                 points=None, firstName=None, lastName=None):
         self.userid = userid
         self.rankid = rankid
         self.set_password(password)
@@ -83,16 +85,17 @@ class User(Base):
         return '<User %r>' % (self.userid)
 
     def serialize(self):
-        return{
-            'userid':self.userid,
-            'rankid':self.rankid,
-            'achievementid':self.achievementid,
-            'email':self.email,
-            'avatar':self.avatar,
-            'points':self.points,
-            'firstName':self.firstName,
-            'lastName':self.lastName
+        return {
+            'userid': self.userid,
+            'rankid': self.rankid,
+            'achievementid': self.achievementid,
+            'email': self.email,
+            'avatar': self.avatar,
+            'points': self.points,
+            'firstName': self.firstName,
+            'lastName': self.lastName
         }
+
 
 class Photo(Base):
     __tablename__ = 'photo'
@@ -105,7 +108,7 @@ class Photo(Base):
     square = Column(Integer)
     type = Column(String(4))
 
-    def __init__(self, title, rankid,userid, description, photo, square, type):
+    def __init__(self, title, rankid, userid, description, photo, square, type):
         self.title = title
         self.rankid = rankid
         self.description = description
@@ -118,16 +121,15 @@ class Photo(Base):
         return '<Photo %r>' % (self.title)
 
     def serialize(self):
-        return{
-            'title':self.title,
-            'rankid':self.rankid,
-            'description':self.description,
-            'photo':self.photo,
-            'square':self.square,
-            'type':self.type,
-            'userid':self.userid
+        return {
+            'title': self.title,
+            'rankid': self.rankid,
+            'description': self.description,
+            'photo': self.photo,
+            'square': self.square,
+            'type': self.type,
+            'userid': self.userid
         }
-
 
 
 class User_Achievement(Base):
