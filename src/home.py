@@ -6,7 +6,6 @@ from flask import session, g, abort, render_template, flash, jsonify
 from flask import Flask, redirect, url_for
 import sqlalchemy
 from flask import request
-from sqlalchemy.dialects.postgresql import json
 from werkzeug.utils import secure_filename
 from register import RegistrationForm
 from login import LoginForm
