@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <h1>Update</h1>
+
+    {% if not session.logged_in %}
+        <a href="{{ url_for('login') }}">Log In</a>
+        <a href="register">register</a>
+    {% else %}
+
+
+        CONTENT
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <h1>Upload</h1>
+
+    {% if not session.logged_in %}
+
+        You need to be logged in to upload photos:
+        <br>
+        <br>
+        <a href="{{ url_for('login') }}">Log In</a>
+        <br>
+
+        <a href="register">register</a>
+    {% else %}
+
+
+
+
+        <form role="form" action=/upload_photo method=post enctype=multipart/form-data>
+            <div class="form-group">
+                <label for="title">Title</label><br>
+                <input type=text name=title placeholder=title>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label><br>
+                <input type=text placeholder=description name=description>
+            </div>
+            <div class="form-group">
+                <label for="square">Square</label><br>
+                <input type=text placeholder=square name=square>
+            </div>
+
+
+            <input type=checkbox name=type value=good> Good
+            <input type=checkbox name=type value=bad> Bad
+
+
+            <br><br>
+
+            <div class="form-group">
+                <label for="file">File input</label><br>
+
+                <div align="center" class="btn btn-default"><input type=file name=file value="Browse"></div>
+                <p class="help-block">Please upload a .jpg</p>
+            </div>
+
+
+            <button type="submit" class="btn btn-default" name=upload_photo>Submit</button>
+        </form>
+
+    {% endif %}
+{% endblock %}

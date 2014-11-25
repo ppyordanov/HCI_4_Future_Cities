@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+    <script type="text/javascript" src="../static/map.js"></script>
+<script type="text/javascript">
+
+var photo_list = {"good": {}, "bad": {}};
+
+var user_list;
+var square;
+   {% for photo in photo_list %}
+       photo = {"title": "{{ photo.title }}","userid": "{{ photo.userid }}","description": "{{ photo.description }}","photo": "{{ photo.photo }}"};
+       square = "{{ photo.square}}";
+
+       if(photo_list[square]== undefined) {
+           photo_list[square]={};
+       }
+
+       if("{{ photo.type }}" =="good"){
+           photo_list[square]['good'] = photo;
+       }
+       else{
+           photo_list[square]['bad'] = photo;
+       }
+        {% endfor %}
+
+//alert(photo_list['377']['bad'].title);
+</script>
+
+
+    <!-- LOADER -->
+    <div id="loader"><img src="../static/images/spinner.gif"/></div>
+
+    <!-- <h1>Home</h1> -->
+    <div class="container fill">
+        <div id="map_canvas"></div>
+    </div>
+
+
+    <script>
+        initialize();
+    </script>
+{% endblock %}

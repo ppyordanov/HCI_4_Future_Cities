@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+    {% if session.logged_in %}
+        <form action="{{ url_for('upload_photo') }}" method=post class=add-entry>
+            <dl>
+                <dt>Title:
+                <dd><input type=text size=30 name=title>
+                <dt>Description:
+                <dd><textarea name=description rows=5 cols=40></textarea>
+                <dd><input type=submit value=Upload>
+            </dl>
+        </form>
+    {% endif %}
+    <ul class=entries>
+        {% for photo in photos %}
+            <li><h2>{{ photo.title }}</h2>{{ photo.description|safe }}
+                {{ photo.time }}
+                {{ photo.location }}
+                {{ photo.latitude }}
+                {{ photo.longitude }}
+                {{ photo.userID }}
+
+                {% else %}
+            <li><em>Unbelievable. No entries here so far</em>
+        {% endfor %}
+    </ul>
+{% endblock %}
