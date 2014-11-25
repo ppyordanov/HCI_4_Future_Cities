@@ -54,7 +54,7 @@ html, body {
     height: 50px;
     position: relative;
     margin: auto;
-    position: absolute;
+    position: fixed;
     top: -200px;
     bottom: 0; /* Aligns Vertically - Remove for Horizontal Only */
     left: 0;

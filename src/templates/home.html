@@ -1,29 +1,32 @@
 {% extends "layout.html" %}
 {% block body %}
-    <script>
-        var user_list = [];
-        var photo_list = [];
 
-        var single_photo;
-        var single_user;
-
-        {% for photo in photo_list %}
-            single_photo = {"{{ photo.square}}": [{{ photo.id}}, {{ photo.userid}}, {{ photo.rankid }}, {{ photo.title }}, {{ photo.description }}, {{ photo.photo }}, {{ photo.type}}]};
-            photo_list.push(single_photo);
-        {% endfor %}
-
-        console.log("parsed photo objects >> " + photo_list.length);
-
-        {% for user in user_list %}
-            single_user = [{{ user.iserid}}, {{ user.rankid}}, {{ user.achievementid }}, {{ user.avatar }}, {{user.email }}, {{ user.points }}, {{ user.firstName}}, {{ user.lastName}}];
-            user_list.push(single_user);
-        {% endfor %}
-
-        console.log("parsed user objects >> " + user_list.length);
-
-    </script>
 
     <script type="text/javascript" src="../static/map.js"></script>
+<script type="text/javascript">
+
+var photo_list = {"good": {}, "bad": {}};
+
+var user_list;
+var square;
+   {% for photo in photo_list %}
+       photo = {"title": "{{ photo.title }}","userid": "{{ photo.userid }}","description": "{{ photo.description }}","photo": "{{ photo.photo }}"};
+       square = "{{ photo.square}}";
+
+       if(photo_list[square]== undefined) {
+           photo_list[square]={};
+       }
+
+       if("{{ photo.type }}" =="good"){
+           photo_list[square]['good'] = photo;
+       }
+       else{
+           photo_list[square]['bad'] = photo;
+       }
+        {% endfor %}
+
+//alert(photo_list['377']['bad'].title);
+</script>
 
 
     <!-- LOADER -->

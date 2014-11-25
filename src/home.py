@@ -6,6 +6,7 @@ from flask import session, g, abort, render_template, flash, jsonify
 from flask import Flask, redirect, url_for
 import sqlalchemy
 from flask import request
+from sqlalchemy.dialects.postgresql import json
 from werkzeug.utils import secure_filename
 from register import RegistrationForm
 from login import LoginForm
@@ -15,7 +16,7 @@ from database import *
 from models import User, Photo
 
 
-UPLOAD_FOLDER = 'static\\images\\user_data\\'
+UPLOAD_FOLDER = 'static/images/user_data/'
 ALLOWED_EXTENSIONS = set(['jpg'])
 
 # configuration
@@ -94,10 +95,10 @@ def allowed_file(filename):
 #views
 @app.route("/")
 def home():
-    user_list = [user.serialize for user in User.query.all()]
-    photo_list = [photo.serialize for photo in Photo.query.all()]
+    #user_list = [user.serialize for user in User.query.all()]
+    photo_list = [photo.serialize() for photo in Photo.query.all()]
 
-    return render_template('home.html', photo_list=photo_list, user_list=user_list)
+    return render_template('home.html', photo_list=photo_list)
 
 
 #RESTful API for DEMO
@@ -136,7 +137,7 @@ def upload_photo():
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            path = os.path.join(app.config['UPLOAD_FOLDER'], request.form['type'], request.form['square'] + '.jpg')
+            path = os.path.join(UPLOAD_FOLDER, request.form['type'], request.form['square'] + '.jpg')
             file.save(path)
             photo = Photo(0, 'admin', title, description, path, square, type)
             db_session.add(photo)
@@ -211,8 +212,10 @@ def statistics():
 def dashboard():
     if not session.get('logged_in'):
         abort(401)
-    user = USER_SESSION['id']
-    flash('Welcome, ' + user)
+    user = "User"
+    if('id' in USER_SESSION):
+        user = USER_SESSION['id']
+    flash('Welcome, ' + user + '.')
     good_photos = []
     users = len(User.query.all())
     photos = len(Photo.query.all())

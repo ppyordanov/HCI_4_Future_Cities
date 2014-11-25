@@ -7,9 +7,11 @@ var centerLocation = new google.maps.LatLng(55.8554602, -4.2324586);
 var map;
 var infowindow = new google.maps.InfoWindow();
 var rectArr = [];
-//var color_codings=["red","blue","green","yellow","orange","gray"];
-var color_codings = ["green", "gray", "yellow"];
+//var COLOR_DATA=["red","blue","green","yellow","orange","gray"];
+var COLOR_DATA = [["gray", 0.2], ["yellow",0.2], ["#81B33A",0.5]]; //COLOR > OPACITY
 
+var user_data;
+var photo_list;
 
 function initialize() {
 
@@ -47,6 +49,22 @@ function initialize() {
     });
 }
 
+function getStatus(num){
+    var result = 0; //GRAY
+    if(num in photo_list){
+        if(photo_list[num]['good'] != undefined && photo_list[num]['bad']!=undefined){
+            result = 2; //GREEN
+        }
+        else{
+        result = 1; //YELLOW
+        }
+
+    }
+
+    return result;
+
+}
+
 
 function drawRects() {
     var NW = new google.maps.LatLng(55.938764, -4.534239);
@@ -59,13 +77,15 @@ function drawRects() {
         NE = google.maps.geometry.spherical.computeOffset(NS, i * 1000, 180);
         SW = google.maps.geometry.spherical.computeOffset(SS, i * 1000, 180);
         for (var a = 0; a < width; a++) {
+            var NUM = i*width + a;
+            var color = getStatus(NUM);
             var rectangle = new google.maps.Rectangle();
             var rectOptions = {
                 strokeColor: "#81B33A",
                 strokeOpacity: 0.2,
                 strokeWeight: 2,
-                fillColor: color_codings[Math.floor(Math.random() * color_codings.length)],
-                fillOpacity: 0.2,
+                fillColor: COLOR_DATA[color][0],
+                fillOpacity: COLOR_DATA[color][1],
                 map: map,
                 bounds: new google.maps.LatLngBounds(SW, NE)
 
@@ -81,9 +101,22 @@ function drawRects() {
 }
 
 
+function generatePopUpContent(num){
+    var content = "<b>Square " + num + "<b><br>";
+    content += photo_list[num]['bad'].title;
+    return content;
+}
+
 function bindWindow(rectangle, num) {
     google.maps.event.addListener(rectangle, 'mouseover', function (event) {
-        infowindow.setContent("Square " + num);
+
+        if(num in photo_list){
+            infowindow.setContent(generatePopUpContent(num));
+        }
+        else{
+            infowindow.setContent("Square " + num + ". Upload a photo from this location to get points!");
+        }
+
         infowindow.setPosition(event.latLng);
         infowindow.open(map);
     });
