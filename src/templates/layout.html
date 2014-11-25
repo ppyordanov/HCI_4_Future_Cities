@@ -29,8 +29,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="/statistics">Statistics</a></li>
+                <li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+                <li><a href="/statistics"><span class="glyphicon glyphicon-stats"></span>  Statistics</a></li>
             </ul>
             <!--
           <form class="navbar-form navbar-left" role="search">
@@ -43,17 +43,14 @@
             <ul class="nav navbar-nav navbar-right">
 
                 {% if not session.logged_in %}
-                    <li><a href="{{ url_for('login') }}">Log In</a>
-                    <li>
-                    <li><a href="{{ url_for('register') }}">Register</a>
-                    <li>
-                        {% else %}
-                    <li><a href="{{ url_for('upload') }}">Upload</a>
-                    <li>
-                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a>
-                    <li>
-                    <li><a href="{{ url_for('logout') }}">log out</a>
-                    <li>
+                   <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span>  Log In</a><li>
+                   <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-registration-mark"></span>  Register</a><li>
+                {% else %}
+                   <li><a href="{{ url_for('profile') }}"><span class="glyphicon glyphicon-user"></span>  Profile</a><li>
+                   <li><a href="{{ url_for('upload') }}"><span class="glyphicon glyphicon-upload"></span>  Upload</a><li>
+                   <li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-th-list"></span>  Dashboard</a><li>
+                   <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span>  Log out</a><li>
+                   <li>
                 {% endif %}
 
 

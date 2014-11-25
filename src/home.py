@@ -208,6 +208,19 @@ def statistics():
     return render_template('statistics.html')
 
 
+@app.route("/profile")
+# @login_required
+def profile():
+    flash('your profile')
+    # sys_user = User.query.filter_by(userid=userid).first()
+    #
+    # if sys_user == None:
+    #     flash('User %s not found.' % userid)
+    #     return redirect(url_for('home'))
+    return render_template('profile.html')
+                           # , sys_user=sys_user)
+
+
 @app.route('/dashboard')
 def dashboard():
     if not session.get('logged_in'):

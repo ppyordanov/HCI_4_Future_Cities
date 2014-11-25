@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block body %}
+        {% if not session.logged_in %}
+
+                You need to be logged in to see your profile:
+                <br>
+                <br>
+            <a href="{{ url_for('login') }}">Log In</a>
+                <br>
+
+            <a href="register">register</a>
+            {% else %}
+
+<div class="page-header" align="center">
+  <h1>Admin</h1>
+</div>
+<img src="/static/images/a.jpg" class="img-rounded" alt="Rounded Image">
+
+
+<form role="form-inline row" action=/edit method=post enctype=multipart/form-data>
+  <div class="form-group">
+          <div class="col-md-12">
+       <!--Button trigger modal -->
+          <button type="button" class="btn btn-success btn-default" data-toggle="modal" data-target="#myEdit">Edit</button>
+          <button type="button" class="btn btn-success btn-default" data-toggle="modal" data-target="#myRank">Rank</button>
+          <button type="button" class="btn btn-success btn-default" data-toggle="modal" data-target="#myPics">My pics</button>
+  </div>
+  </div>
+</form>
+
+
+             <!-- Modal: Edit -->
+<div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myEditLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myEditLabel">Edit</h4>
+                </div>
+      <div class="modal-body">
+          Edit Profile pic:
+          Change password
+          Old password:
+          New password:
+      </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Modal: Rank -->
+<div class="modal fade" id="myRank" tabindex="-1" role="dialog" aria-labelledby="myRankLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myRankLabel">Rank</h4>
+                </div>
+      <div class="modal-body">
+          Rank: Silver
+      </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal: All pics -->
+<div class="modal fade" id="myPics" tabindex="-1" role="dialog" aria-labelledby="myPicsLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myPicsLabel">Pictures</h4>
+                </div>
+      <div class="modal-body">
+          <img src="/static/images/user_data/good/295.jpg" class="img-rounded" alt="Rounded Image">
+          <img src="/static/images/user_data/bad/295.jpg" class="img-rounded" alt="Rounded Image">
+          <img src="/static/images/user_data/good/296.jpg" class="img-rounded" alt="Rounded Image">
+          <img src="/static/images/user_data/bad/296.jpg" class="img-rounded" alt="Rounded Image">
+          <img src="/static/images/user_data/good/297.jpg" class="img-rounded" alt="Rounded Image">
+          <img src="/static/images/user_data/bad/297.jpg" class="img-rounded" alt="Rounded Image">
+          <img src="/static/images/user_data/good/298.jpg" class="img-rounded" alt="Rounded Image">
+          <img src="/static/images/user_data/bad/298.jpg" class="img-rounded" alt="Rounded Image">
+      </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% endblock %}
