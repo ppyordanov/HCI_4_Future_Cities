@@ -114,3 +114,8 @@ html, body {
     vertical-align: middle;
     pointer-events: none;
 }
+
+.modal-content {
+  height:400px;
+  overflow:scroll;
+}
