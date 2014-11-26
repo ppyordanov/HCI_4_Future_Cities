@@ -116,14 +116,15 @@ def get_users():
         return jsonify(results=list)
 
 
-@app.route("/update")
-def update():
-    return
 
 
 @app.route("/upload")
 def upload():
-    return render_template('upload.html')
+    return render_template('upload.html', type='Upload')
+
+@app.route("/update")
+def update():
+    return render_template('upload.html', type='Update')
 
 
 @app.route('/upload_photo', methods=['POST'])
@@ -134,12 +135,12 @@ def upload_photo():
         title = request.form['title']
         description = request.form['description']
         square = request.form['square']
-
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            path = os.path.join(UPLOAD_FOLDER, request.form['type'], request.form['square'] + '.jpg')
+            parsename = str(square) + '.jpg'
+            filename = secure_filename(parsename)
+            path = UPLOAD_FOLDER + "/" + type + "/" + filename
             file.save(path)
-            photo = Photo(0, 'admin', title, description, path, square, type)
+            photo = Photo(title, 0, 0, description, path, square, type)
             db_session.add(photo)
             db_session.commit()
             flash('The new photo was successfully posted.')
