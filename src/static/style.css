@@ -1,11 +1,12 @@
-html, body {
+html, body{
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
-.start {
+.start{
     background: url("/static/images/glasgow4.jpg") no-repeat top center fixed;
     background-size: cover;
     margin: 0;
@@ -14,51 +15,39 @@ html, body {
     width: 100%;
 }
 
-#statusmessage {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 200px;
-    line-height: 20px;
-    color: #FFFFFF;
-    background-color: #81B33A;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-    text-align: left;
+#statusmessage{
+    position:fixed;
+    bottom:0;
+    right:0;
+    width:200px;
+    line-height:10px;
+    color:#FFFFFF;
+    background-color:#81B33A;
+    border-radius:5px;
+    padding:10px;
+    margin:10px;
+    text-align:left;
     z-index: 999;
 }
 
-.header {
+
+.header{
     height: 100%;
     width: 100%;
     margin: 0;
-    padding: 200px 0 0 0;
+    padding:  200px 0 0 0;
     color: white;
     text-align: center;
     font-size: 60px;
 }
 
-.content {
+.content{
     width: 100%;
     height: 100%;
     background: gray;
     margin: 0;
     padding: 0;
 
-}
-
-#loader {
-    width: 800px;
-    padding: 10px;
-    height: 50px;
-    position: relative;
-    margin: auto;
-    position: fixed;
-    top: -200px;
-    bottom: 0; /* Aligns Vertically - Remove for Horizontal Only */
-    left: 0;
-    right: 0;
 }
 
 #map_canvas {
@@ -69,10 +58,6 @@ html, body {
     top: 0;
     left: 0;
     right: 0;
-
-    line-height: 1.35;
-    overflow: hidden;
-    white-space: nowrap;
 
 }
 
@@ -92,22 +77,25 @@ html, body {
     white-space: nowrap;
 }
 
-.center {
-    float: none;
-    margin-left: auto;
-    margin-right: auto;
+ .center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
 }
 
 
+.pull-left {
+  float: left !important;
+}
+
 .vertical-alignment-helper {
-    display: table;
+    display:table;
     height: 100%;
     width: 60%;
     margin-left: auto;
     margin-right: auto;
-    pointer-events: none; /* This makes sure that we can still click outside of the modal to close it */
+    pointer-events:none; /* This makes sure that we can still click outside of the modal to close it */
 }
-
 .vertical-align-center {
     /* To center vertically */
     display: table-cell;
@@ -115,7 +103,53 @@ html, body {
     pointer-events: none;
 }
 
-.modal-content {
-  height:500px;
-  overflow:scroll;
+.nav-tabs {
+    white-space: normal;
+    border-bottom: 1px solid  #93c54b;
+    background-color:  #93c54b;
+}
+.nav-tabs>li.active>a,.nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    color:  #93c54b;
+    background-color: #ddd;
+    border: 6px solid  #93c54b;
+    border-bottom-color: transparent;
+}
+.nav-tabs > li > a:hover {
+    color:  #93c54b;
+    background-color: #ddd;
+}
+.nav-tabs>li>a {
+    color: white;
+    background-color:  #93c54b;
+    margin-right: 2px;
+    line-height: 1.428571429;
+    border: 2px solid transparent;
+    border-radius: 4px 4px 0 0;
+}
+.tab-content{
+    position: absolute;
+    /*top: 47px;*/
+    /*bottom: 200px;*/
+    width: 96.7%;
+    background-color: #ddd;
+    border-left: 4px solid  #93c54b;
+    border-right: 4px solid  #93c54b;
+    border-bottom: 4px solid  #93c54b;
+    /*padding: 200px;*/
+
+}
+
+/*#content {*/
+  /*position: absolute;*/
+  /*top: 150px;*/
+  /*bottom: 0;*/
+  /*background: #999;*/
+  /*width: 100%;*/
+  /*overflow-y: auto;*/
+  /*border-top: 4px solid #2E2E2E;*/
+/*}*/
+
+.tab-pane {
+    height: 400px;
+    overflow-y: scroll;
 }
