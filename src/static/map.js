@@ -129,18 +129,41 @@ function drawRects() {
     }
 }
 
-function metaData(title, description, user){
-    return "<div class='META topmin'>" + "<b>Weather:</b> " + title + "<br>" + "<b>Title:</b> " +  title + "<br>" + "<b>Description:</b> "  + description + "<br>" + "<b>Uploaded by:</b> "  + user +  "</div>";
+function metaData(title, description, user, weather){
+    return "<div class='META topmin'>" + "<b>Weather:</b> " + weather + "<br>" + "<b>Title:</b> " +  title + "<br>" + "<b>Description:</b> "  + description + "<br>" + "<b>Uploaded by:</b> "  + user +  "</div>";
+}
+
+function modalBox(photo, id){
+
+    var content = "<div class='fade modal' id='" + id +"'><div class='modal-dialog modal-content'>";
+    content += "<div class='modal-content span7 text-center'>";
+    content += "<img class='topplusmore myImg' src=" + photo + "></img><br>";
+    content += "<a hreg='#' rel='tooltip' title='Rate up' class='btn btn-success glyphicon glyphicon-thumbs-up'></a>";
+    content += " <a hreg='#'  rel='tooltip' title='Rate down' class='btn btn-danger glyphicon glyphicon-thumbs-down'></a>";
+    content += " <a href='" + photo + "'  rel='tooltip' download='" + photo +"' title='Download' class='btn btn-primary glyphicon glyphicon-download-alt'></a>";
+    content += " <a data-dismiss='modal' class='btn btn-default '>Close</a>";
+    content += "</div></div></div>";
+
+    /*
+    content+=       "<div id='" + id +"' class='fade modal' style='display: none; '>" +
+                    "<div class='modal-dialog modal-content'><h3>Preview Photo</h3>" +
+					"<div class='modal-body'><img class='topplusmore myImg' src=" + photo + "/>" +
+					"</div><div class='modal-footer'>" +
+					"<a href='#' rel='tooltip' title='Rate up' class='btn btn-success glyphicon glyphicon-thumbs-up'></a>" +
+					"<a href='#' rel='tooltip' title='Rate up' class='btn btn-success glyphicon glyphicon-thumbs-up'></a>" +
+					"<a href='" + photo + "'  rel='tooltip' download='" + photo +"' title='Download' class='btn btn-primary glyphicon glyphicon-download-alt'></a>" +
+                    "<a href='#' rel='tooltip' title='OK' class='btn btn-success glyphicon glyphicon-ok-sign' data-dismiss='modal'></a>" +
+                    "</div></div></div>";
+    */
+
+    return content
+
 }
 
 function tooltip(photo, id){
     var content ="";
     content = "<div class='span7 text-center'><a data-toggle='modal' href='#" + id +"' rel='tooltip' title='Preview photo.' class=' glyphicon glyphicon-eye-open btn btn-default'></a> ";
-    content += "<div class='fade modal' style='width:auto;height:auto;' id='" + id +"'><div class='modal-dialog modal-content'>";
-    content += "<div class='modal-content span7 text-center'>";
-    content += "<img class='topplusmore' src=" + photo + "></img><br>";
-    content += "<a data-dismiss='modal' class='btn btn-success '>Close</a>";
-    content += "</div></div></div>";
+    content += modalBox(photo, id);
     content += "<a href='/update' rel='tooltip' id='update' title='Update photo.' class='glyphicon glyphicon-collapse-up btn btn-default'></a>";
     content += "</div>";
 
@@ -154,7 +177,7 @@ function thumbNail(photo, id){
     var content = "";
     content +="<div id='pre' class='META thumbnail topplus'>";
     content+="<div class='caption'>" + tooltip(photo, id) +"</div>";
-    content += "<img height='200' width='200' src=" + photo + "></img>";
+    content += "<img class='myImg' height='200' width='200' src=" + photo + "></img>";
     content +="</div>";
     return content;
 }
@@ -169,6 +192,8 @@ function generatePopUpContent(num){
 
     var gtitle = NO_INFO;
     var btitle = NO_INFO;
+    var gweather = NO_INFO;
+    var bweather = NO_INFO;
     var gdesc = NO_INFO;
     var bdesc = NO_INFO;
     var guser = NO_INFO;
@@ -181,6 +206,7 @@ function generatePopUpContent(num){
             gtitle = good_photo.title;
             gdesc = good_photo.description;
             guser = good_photo.userid;
+            gweather = good_photo.weather;
         }
         else{
             bad_photo = photo_list[num][BAD];
@@ -188,6 +214,7 @@ function generatePopUpContent(num){
             btitle = bad_photo.title;
             bdesc = bad_photo.description;
             buser = bad_photo.userid;
+            bweather = bad_photo.weather;
         }
     }
     else if(status == 2){
@@ -199,17 +226,19 @@ function generatePopUpContent(num){
         gtitle = good_photo.title;
         gdesc = good_photo.description;
         guser = good_photo.userid;
+        gweather=good_photo.weather;
         btitle = bad_photo.title;
         bdesc = bad_photo.description;
         buser = bad_photo.userid;
+        bweather =bad_photo.weather;
     }
 
     var content = "<b>Square " + num + "</b><br>";
     content += thumbNail(good_weather, 1);
     content += thumbNail(bad_weather, 2);
     content += "<br>";
-    content += metaData(gtitle, gdesc, guser);
-    content += metaData(btitle, bdesc, buser);
+    content += metaData(gtitle, gdesc, guser, gweather);
+    content += metaData(btitle, bdesc, buser, bweather);
 
     return content;
 }

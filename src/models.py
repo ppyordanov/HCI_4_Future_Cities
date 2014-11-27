@@ -107,8 +107,9 @@ class Photo(Base):
     photo = Column(String(200))
     square = Column(Integer)
     type = Column(String(4))
+    weather = Column(String)
 
-    def __init__(self, title, rankid, userid, description, photo, square, type):
+    def __init__(self, title, userid, rankid, description, photo, square, type, weather):
         self.title = title
         self.rankid = rankid
         self.description = description
@@ -116,6 +117,7 @@ class Photo(Base):
         self.square = square
         self.type = type
         self.userid = userid
+        self.weather = weather
 
     def __repr__(self):
         return '<Photo %r>' % (self.title)
@@ -128,7 +130,8 @@ class Photo(Base):
             'photo': self.photo,
             'square': self.square,
             'type': self.type,
-            'userid': self.userid
+            'userid': self.userid,
+            'weather': self.weather
         }
 
 

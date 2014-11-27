@@ -4,8 +4,8 @@
     <h1>Update</h1>
 
     {% if not session.logged_in %}
-        <a href="{{ url_for('login') }}">Log In</a>
-        <a href="register">register</a>
+        <a class="btn btn-default" href="{{ url_for('login') }}">Log In</a>
+        <a class="btn btn-default" href="register">register</a>
     {% else %}
 
 

@@ -10,7 +10,7 @@ var photo_list = {"good": {}, "bad": {}};
 var user_list;
 var square;
    {% for photo in photo_list %}
-       photo = {"title": "{{ photo.title }}","userid": "{{ photo.userid }}","description": "{{ photo.description }}","photo": "{{ photo.photo }}"};
+       photo = {"title": "{{ photo.title }}","userid": "{{ photo.userid }}","description": "{{ photo.description }}","photo": "{{ photo.photo }}", "weather": "{{ photo.weather }}"};
        square = "{{ photo.square}}";
 
        if(photo_list[square]== undefined) {
