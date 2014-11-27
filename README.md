@@ -22,7 +22,9 @@ CONFIGURATION:
  * open terminal window
      * python home.py
  
-_The app is running on localhost, port 5000: http://127.0.0.1:5000/_
+_The app is running on localhost, port 5000:_
 
+ * http://127.0.0.1:5000/
 
-The web application is also available for preview at: http://ppyordanov.pythonanywhere.com/
+The web application is also available for preview at: 
+ * **http://ppyordanov.pythonanywhere.com/**
