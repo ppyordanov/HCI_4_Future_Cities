@@ -18,9 +18,20 @@ Contributors:
 
 CONFIGURATION:
 
+/SERVER/
+
  * clone this repository
+ * easy_install pip
+ * pip install requirements.txt
  * open terminal window
      * python home.py
+
+/CLIENT/
+
+ * client/COMPILED/:
+     * Android/: compiled .apk
+     * Windows Phone/: .xap application
+ * download and install on device according to preference
  
 _The app is running on localhost, port 5000:_
 
