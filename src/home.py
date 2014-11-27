@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 from register import RegistrationForm
 from database import *
 from models import User, Photo
+from population import db_population
 from upload import UploadForm
 
 
@@ -103,6 +104,9 @@ def getUserPhotos(UNAME):
 def getUser(UNAME):
     return User.query.filter_by(userid=UNAME).first()
 
+def photoNum():
+    return len(Photo.query.all())
+
 
 #views
 @app.route("/")
@@ -110,8 +114,9 @@ def home():
     #user_list = [user.serialize for user in User.query.all()]
     photo_list = [photo.serialize() for photo in Photo.query.all()]
     user = getUser(USERNAME)
+    ps = photoNum()
 
-    return render_template('home.html', photo_list=photo_list, user=user)
+    return render_template('home.html', photo_list=photo_list, user=user, ps=ps)
 
 
 #RESTful API for DEMO
@@ -133,14 +138,16 @@ def get_users():
 def upload():
     user = getUser(USERNAME)
     form = UploadForm()
-    return render_template('upload.html', type='Upload', user=user, form=form)
+    ps = photoNum()
+    return render_template('upload.html', type='Upload', user=user, form=form, ps=ps)
 
 
 @app.route("/update")
 def update():
     user = getUser(USERNAME)
     form = UploadForm()
-    return render_template('upload.html', type='Update', user=user, form=form)
+    ps = photoNum()
+    return render_template('upload.html', type='Update', user=user, form=form, ps=ps)
 
 
 @app.route('/upload_photo', methods=('GET', 'POST'))
@@ -148,6 +155,7 @@ def upload_photo():
     user = getUser(USERNAME)
     points = getUserPoints(USERNAME)
     form = UploadForm(request.form)
+    ps = photoNum()
     if request.method == 'POST'  and form.validate():
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -176,13 +184,14 @@ def upload_photo():
             db_session.query(User).filter_by(userid=USERNAME).update({'points': points})
             db_session.commit()
         return redirect(url_for('home'))
-    return render_template('upload.html', points=points, user=user, form=form)
+    return render_template('upload.html', points=points, user=user, form=form, ps=ps)
 
 
 #No encrypted verification - demonstation purposes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    ps = photoNum()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -197,7 +206,7 @@ def login():
             flash('You were successfully logged in.')
             return redirect(url_for('home'))
 
-    return render_template('login.html', error=error)
+    return render_template('login.html', error=error, ps=ps)
 
 
 '''
@@ -213,8 +222,9 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    ps = photoNum()
     form = RegistrationForm(request.form)
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, ps=ps)
 
 
 @app.route('/register_submit', methods=['GET', 'POST'])
@@ -238,21 +248,23 @@ def logout():
 
 @app.route('/statistics')
 def statistics():
+    ps = photoNum()
     user = getUser(USERNAME)
     uphotos = getUserPhotos(USERNAME)
-    return render_template('statistics.html', user=user, photos=uphotos)
+    return render_template('statistics.html', user=user, photos=uphotos, ps=ps)
 
 
 @app.route('/dashboard')
 def dashboard():
     if not session.get('logged_in'):
         abort(401)
+    ps = photoNum()
     user = getUser(USERNAME)
     flash('Welcome, ' + user.userid + '.')
     good_photos = []
     users = User.query.all()
     photos = Photo.query.all()
-    return render_template('dashboard.html', good_photos=good_photos, users=users, photos=photos, user=user)
+    return render_template('dashboard.html', good_photos=good_photos, users=users, photos=photos, user=user, ps=ps)
 
 
 #DB querying

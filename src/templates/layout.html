@@ -6,6 +6,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="../static/flash.js"></script>
 <script type="text/javascript" src="../static/loading.js"></script>
+<script type="text/javascript" src="../static/tabs.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 <script type="text/javascript"
@@ -49,6 +50,8 @@
                     <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Log In</a>
                     <li>
                     <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-registration-mark"></span> Register</a>
+                    <li>
+                    <li><button id="pts" class="btn btn-default disabled">Photos: <b>{{ ps }}</b></button>
                     <li>
                         {% else %}
 

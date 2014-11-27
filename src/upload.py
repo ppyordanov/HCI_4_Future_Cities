@@ -10,5 +10,5 @@ class UploadForm(Form):
     title = TextField('Title', [validators.Length(min=4, max=25)])
     description = TextField('Description', [validators.Length(min=6, max=35)])
     square = TextField('Square', [validators.Length(min=1, max=3)])
-    weather = SelectField(u'Type',coerce=str, choices = WEATHER, validators = [Required()])
+    weather = SelectField(u'Weather',coerce=str, choices = WEATHER, validators = [Required()])
     photo = FileField('Your photo')

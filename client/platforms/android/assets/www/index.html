@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>UG Campus Map Application</title>
+    <meta name="description" content="Noise and Pollution Glasgow University Campus Map Application">
+
+    <link href="http://code.jquery.com/mobile/latest/jquery.mobile.css" rel="stylesheet" type="text/css" />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/latest/jquery.mobile.js"></script>
+
+    <script  type="text/javascript" src="js/json2.js"></script>
+    <script  type="text/javascript" src="js/track.js"></script>
+
+
+</head>
+
+<body>
+
+<div data-role="page" id="home">
+
+    <div data-role="content">
+    Main content goes here
+        <div id="spano"></div>
+    <br>
+    <div id="route_data">
+    <label>ROUTE ID:</label>
+    <br>
+    <input type="text" name="route_id" id="route_id" placeholder="route"/>
+
+        <label>WINDOW (ms):</label>
+        <br>
+        <input type="text" name="window" id="window" placeholder="window"/>
+    </div>
+    <div id="status"></div>
+    <br>
+    <div id="connection">Connected</div>
+    <br>
+    <button data-role="button" id="start">START TRACKING</button>
+    <button data-role="button" id="stop">STOP TRACKING</button>
+    <button data-role="button" id="clear">CLEAR DATA</button>
+
+    <br>
+    <br>
+    <a href="#history" data-transition="none">HISTORY</a>
+        <div id="probe">PROBES</div>
+    </div>
+
+</div>
+
+<div data-role="page" id="history">
+
+    <div data-role="content">
+    Show history
+    <div id="route_number"></div>
+    <br>
+    <div id="list"></div>
+        <br>
+        <br>
+        <a href="#home" data-transition="none">HOME</a>
+    </div>
+</div>
+
+<div data-role="page" id="route">
+
+    <div data-role="content">
+        Show route data:
+
+        <button data-role="button" id="upload">UPLOAD</button>
+        <br>
+
+        <div id="route_map">
+
+            <div id="map_canvas" class="map"></div>
+
+
+        </div>
+
+
+        <a href="#home" data-transition="none">HOME</a>
+    </div>
+</div>
+
+</body>
+
+</html>
