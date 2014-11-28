@@ -26,7 +26,7 @@ CONFIGURATION:
  * open terminal window
      * python home.py
 
-/CLIENT/
+/ANDROID CLIENT/
 
  * client/COMPILED/:
      * Android/: compiled .apk
