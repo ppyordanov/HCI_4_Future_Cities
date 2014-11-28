@@ -1,7 +1,7 @@
 HCI_4_Future_Cities
 ===================
 
-/DEVELOPMENT BRANCH/
+/MASTER BRANCH/
 
 A fourth year project for the Human-Computer Interaction 4 course aiming to develop a highly interactive web application to encourage technology usage in the city.
 
