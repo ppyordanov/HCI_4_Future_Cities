@@ -1,179 +1,178 @@
 {% extends "layout.html" %}
 {% block body %}
-    <script type="text/javascript" src="../static/tabs.js"></script>
-    <h1>Dashboard</h1>
 
-    <ul class=entries>
-        {% for photo in bad_photos %}
-            <li><h2>{{ photo.title }}</h2>{{ photo.description }}
-            <img src="{{ photo.photo }}">
-        {% endfor %}
-    </ul>
+    <h1>User Profile</h1>
 
 
 
-    <div id="myModal" class="fade modal" style="display: none; ">
-        <div class='modal-dialog modal-content'>
-            <h3>Delete Entry</h3>
 
-            <div class="modal-body">
-                Are you sure you would like to delete this entry?
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+                        {% if not session.logged_in %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><b>Please log in or sign up</b></h3>
             </div>
-            <div class="modal-footer">
-                <a href="#" rel="tooltip" title="Delete" class="btn btn-success glyphicon glyphicon-ok-sign"
-                   data-dismiss="modal"></a>
-                <a href="#" rel="tooltip" title="Cancel" class="btn btn-primary glyphicon glyphicon-remove-circle"
-                   data-dismiss="modal"></a>
-            </div>
-        </div>
-
-    </div>
+            <div class="panel-body">
 
 
-    <div role="tabpanel" class="center-block" style="width: 60%">
+        You need to be logged in to upload photos:
+        <br>
+        <br>
+        <a class="btn btn-default" href="{{ url_for('login') }}">Log In</a>
 
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Users</a>
-            </li>
-            <li role="presentation"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a>
-            </li>
-        </ul>
+        <a class="btn btn-default" href="register">register</a>
+    {% else %}
 
-        <!-- Tab panes -->
-        <div class="tab-content"><br>
+        <div id="photoModal{{ user.userid }}" class="fade modal" style="display: none; ">
+            <div class='modal-dialog modal-content'>
+                <h3>Preview Photos</h3>
 
-            <div role="tabpanel" class="tab-pane active" id="home">
+                <div class="modal-body center">
 
 
-                {% for user in users %}
+                    {% for photo in photos %}
 
-                    <div id="userModal{{ user.userid }}" class="fade modal" style="display: none; ">
-                        <div class='modal-dialog modal-content'>
-                            <h3>Preview Avatar</h3>
 
-                            <div class="modal-body">
-                                <img src="{{ user.avatar }}"/>
+
+                        <div data-keyboard="true" id="pModal{{ photo.photoid }}" tabindex='-1' class="fade modal"
+                             style="display: none; ">
+                            <div class='modal-dialog modal-content'>
+                                <h3>Preview Photo</h3>
+
+                                <div class="modal-body">
+                                    <img src="{{ photo.photo }}"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#" rel="tooltip" title="OK"
+                                       class="btn btn-success glyphicon glyphicon-ok-sign"
+                                       data-dismiss="modal"></a>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <a href="#" rel="tooltip" title="OK" class="btn btn-success glyphicon glyphicon-ok-sign"
-                                   data-dismiss="modal"></a>
-                            </div>
+
                         </div>
 
-                    </div>
 
 
-                    <!-- <img style="float:right" width="60" height="60" src="{{ user.avatar }}"> -->
-                    <div class="list-group text-left">
-                        <div class="list-group-item active">
-                            <button rel="tooltip" title="profile page"
-                                    class="btn btn-info dash glyphicon glyphicon-log-in btn-xs"></button>
-                            <button rel="tooltip" title="update profile"
-                                    class="btn btn-success dash glyphicon glyphicon-collapse-up btn-xs"></button>
-                            <button rel="tooltip" title="delete profile"
-                                    class="btn btn-danger dash glyphicon glyphicon-remove-circle btn-xs"
-                                    data-toggle="modal"
-                                    href="#myModal"></button>
+                        <div style="display:inline; float:left; margin-left:25px">
 
-                            <div class="smallThumbnail">
-                                <div class="smallCaption">
-                                    <div class="span7 text-center"><a data-toggle="modal"
-                                                                      href="#userModal{{ user.userid }}"
-                                                                      class=" glyphicon glyphicon-eye-open btn btn-default btn-xs"></a>
+
+                            <div class="thumbnail center-block">
+                                <div class="caption">
+                                    <div class="span7 text-center">
+                                        <div class="span7 text-center"><a data-toggle="modal"
+                                                                          href="#pModal{{ photo.photoid }}"
+                                                                          rel="tooltip" title="Preview photo."
+                                                                          class=" glyphicon glyphicon-eye-open btn btn-default"></a>
+                                            <a href="/update" rel="tooltip" id="update" title="Update photo."
+                                               class="glyphicon glyphicon-collapse-up btn btn-default"></a></div>
                                     </div>
                                 </div>
-                                <img height="60" width="60" src="{{ user.avatar }}"/>
-                            </div>
-                            <div id="dashdata">
-
-                                <h4 class="list-group-item-heading ">{{ user.userid }}</h4>
-                                <button rel="tooltip" title="Rank Id"
-                                        class="btn btn-primary btn-sm">{{ user.rankid }}</button>
-                                <button rel="tooltip" title="Achievements"
-                                        class="btn btn-primary btn-sm">{{ user.achievementid }}</button>
-                                <button rel="tooltip" title="user points"
-                                        class="btn btn-primary btn-sm">{{ user.points }}</button>
-                                <button rel="tooltip" title="name"
-                                        class="btn btn-primary btn-sm">{{ user.firstName }} {{ user.lastName }}</button>
-                                <button rel="tooltip" title="email address"
-                                        class="btn btn-primary btn-sm">{{ user.email }}</button>
+                                <img height="200" width="200" src="{{ photo.photo }}"/>
                             </div>
 
+
+                            <div clas="META">{{ photo.title }}<br>
+                                {{ photo.description }}</div>
                         </div>
 
-                    </div>
+                    {% endfor %}
 
 
-                {% endfor %}
+                </div>
+                <div class="modal-footer">
 
+                </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="photos">
 
-
-                {% for photo in photos %}
-
-
-                    <div id="photoModal{{ photo.photoid }}" class="fade modal" style="display: none; ">
-                        <div class='modal-dialog modal-content'>
-                            <h3>Preview Photo</h3>
-
-                            <div class="modal-body">
-                                <img src="{{ photo.photo }}"/>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="#" rel="tooltip" title="OK" class="btn btn-success glyphicon glyphicon-ok-sign"
-                                   data-dismiss="modal"></a>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="list-group text-left">
-                        <div class="list-group-item active">
-                            <button rel="tooltip" title="profile page"
-                                    class="btn btn-info dash glyphicon glyphicon-log-in btn-xs"></button>
-                            <button rel="tooltip" title="update profile"
-                                    class="btn btn-success dash glyphicon glyphicon-collapse-up btn-xs"></button>
-                            <button rel="tooltip" title="delete photo"
-                                    class="btn btn-danger dash glyphicon glyphicon-remove-circle btn-xs"
-                                    data-toggle="modal"
-                                    href="#myModal"></button>
-
-                            <div class="smallThumbnail">
-                                <div class="smallCaption">
-                                    <div class="span7 text-center"><a data-toggle="modal"
-                                                                      href="#photoModal{{ photo.photoid }}"
-                                                                      class=" glyphicon glyphicon-eye-open btn btn-default btn-xs"></a>
-                                    </div>
-                                </div>
-                                <img height="60" width="60" src="{{ photo.photo }}"/>
-                            </div>
-
-                            <div id="dashdata">
-                                <h4 class="list-group-item-heading ">{{ photo.photoid }}</h4>
-                                <button rel="tooltip" title="title"
-                                        class="btn btn-primary btn-sm ">{{ photo.title }}</button>
-                                <button rel="tooltip" title="description"
-                                        class="btn btn-primary btn-sm">{{ photo.description }}</button>
-                                <button rel="tooltip" title="square grid location"
-                                        class="btn btn-primary btn-sm">{{ photo.square }}</button>
-                                <button rel="tooltip" title="uploaded by"
-                                        class="btn btn-primary btn-sm">{{ photo.userid }}</button>
-                                <button rel="tooltip" title="weather" class="btn btn-primary btn-sm">weather</button>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-
-                {% endfor %}
-
-            </div>
         </div>
 
-    </div>
+        <div id="userModal{{ user.userid }}" class="fade modal" style="display: none; ">
+            <div class='modal-dialog modal-content'>
+                <h3>Preview Avatar</h3>
 
+                <div class="modal-body">
+                    <img src="{{ user.avatar }}"/>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" rel="tooltip" title="OK" class="btn btn-success glyphicon glyphicon-ok-sign"
+                       data-dismiss="modal"></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ user.userid }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 " align="center">
+                        <div class="smallThumbnail center topplusmore">
+                            <div class="smallCaption">
+                                <div class="span7 text-center"><a data-toggle="modal"
+                                                                  href="#userModal{{ user.userid }}"
+                                                                  class=" glyphicon glyphicon-eye-open btn btn-default btn-xs"></a>
+                                </div>
+                            </div>
+                            <img height="60" width="60" src="{{ user.avatar }}"/>
+                        </div>
+                    </div>
+
+                    <div class=" col-md-9 col-lg-9 ">
+                        <table class="table table-user-information">
+                            <tbody>
+                            <tr>
+                                <td>First Name:</td>
+                                <td>{{ user.firstName }}</td>
+                            </tr>
+                            <tr>
+                                <td>Last Name:</td>
+                                <td>{{ user.lastName }}</td>
+                            </tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                            </tr>
+
+                            <tr>
+                            <tr>
+                                <td>Points:</td>
+                                <td>{{ user.points }}</td>
+                            </tr>
+                            <tr>
+                                <td>Rank:</td>
+                                <td>{{ user.rankid }}</td>
+                            </tr>
+                            <tr>
+                                <td>Achievements:</td>
+                                <td>{{ user.achievementid }}</td>
+                            </tr>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                        <a href="#photoModal{{ user.userid }}" data-toggle="modal" rel="tooltip" title="Preview user photos." class="btn btn-default">Photos</a>
+                        <a href="#" class="btn btn-default" rel="tooltip" title="Achievements">Achievements</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+
+
+                <div align="right"><a href="#" data-original-title="Edit this user" type="button"
+                                      class="btn btn-sm btn-warning" rel="tooltip" title="Edit Profile"><i class="glyphicon glyphicon-edit"></i></a>
+                    <a data-original-title="Remove this user"  rel="tooltip" title="Delete profile" data-toggle="tooltip" type="button"
+                       class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a><br>
+                </div>
+            </div>
+
+        </div>
+
+                        {% endif %}
+
+    </div>
 
 {% endblock %}

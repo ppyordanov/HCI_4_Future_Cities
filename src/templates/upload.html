@@ -32,7 +32,7 @@
 
 
         {% from "_formhelpers.html" import render_field %}
-        <form method=post action="/upload_photo" class=" center-block" style="width:250px"  enctype="multipart/form-data">
+        <form method=post action="/upload_photo" class=" center-block"  enctype="multipart/form-data">
             <dl>
                 {{ render_field(form.title) }}
                 {{ render_field(form.description) }}
@@ -42,7 +42,7 @@
             <input type=hidden name=action value={{ type }}>
             <div class="form-group">
                 <label for="file">Photo</label>
-
+                <br>
                 <div align="center" class="btn btn-default"><input type=file name=file value="Browse"></div>
                 <p class="help-block">Please upload a .jpg</p>
             </div>

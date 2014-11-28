@@ -51,6 +51,10 @@ USER_SESSION = {}
 GOOD = ['sunny', 'hot', 'cloudy']
 BAD = ['windy', 'rainy', 'snowy' ,'hail']
 
+#Grid capacity in percent
+GWIDTH=40
+GHEIGHT=20
+CAPACITY = (GWIDTH*GHEIGHT)/100
 
 @login_manager.user_loader
 def load_user(userid):
@@ -116,7 +120,7 @@ def home():
     user = getUser(USERNAME)
     ps = photoNum()
 
-    return render_template('home.html', photo_list=photo_list, user=user, ps=ps)
+    return render_template('home.html', photo_list=photo_list, user=user, ps=ps, load=ps/CAPACITY)
 
 
 #RESTful API for DEMO
@@ -139,7 +143,7 @@ def upload():
     user = getUser(USERNAME)
     form = UploadForm()
     ps = photoNum()
-    return render_template('upload.html', type='Upload', user=user, form=form, ps=ps)
+    return render_template('upload.html', type='Upload', user=user, form=form, ps=ps, load=ps/CAPACITY)
 
 
 @app.route("/update")
@@ -147,7 +151,7 @@ def update():
     user = getUser(USERNAME)
     form = UploadForm()
     ps = photoNum()
-    return render_template('upload.html', type='Update', user=user, form=form, ps=ps)
+    return render_template('upload.html', type='Update', user=user, form=form, ps=ps, load=ps/CAPACITY)
 
 
 @app.route('/upload_photo', methods=('GET', 'POST'))
@@ -155,11 +159,11 @@ def upload_photo():
     user = getUser(USERNAME)
     points = getUserPoints(USERNAME)
     form = UploadForm(request.form)
+    action = request.form['action']
     ps = photoNum()
     if request.method == 'POST'  and form.validate():
         file = request.files['file']
         if file and allowed_file(file.filename):
-            action = request.form['action']
             square = form.square.data
             title = form.title.data
             description = form.description.data
@@ -171,20 +175,20 @@ def upload_photo():
                 type ='bad'
             parsename = str(square) + '.jpg'
             filename = secure_filename(parsename)
-            path = UPLOAD_FOLDER + "/" + type + "/" + filename
+            path = UPLOAD_FOLDER + type + "/" + filename
             file.save(path)
             photo = Photo(title, user.userid, 0, description, path, square,type,weather)
             db_session.add(photo)
             if action=='Upload':
-                flash('+50 POINTS. The new photo was successfully posted.')
+                flash('+50 points. The new photo was successfully posted.')
                 points +=50
             elif action=='Update':
-                flash('+20 POINTS. The new photo was successfully updated.')
+                flash('+20 points. The new photo was successfully updated.')
                 points +=20
             db_session.query(User).filter_by(userid=USERNAME).update({'points': points})
             db_session.commit()
         return redirect(url_for('home'))
-    return render_template('upload.html', points=points, user=user, form=form, ps=ps)
+    return render_template('upload.html',type=action, points=points, user=user, form=form, ps=ps, load=ps/CAPACITY)
 
 
 #No encrypted verification - demonstation purposes
@@ -206,7 +210,7 @@ def login():
             flash('You were successfully logged in.')
             return redirect(url_for('home'))
 
-    return render_template('login.html', error=error, ps=ps)
+    return render_template('login.html', error=error, ps=ps, load=ps/CAPACITY)
 
 
 '''
@@ -224,19 +228,21 @@ def login():
 def register():
     ps = photoNum()
     form = RegistrationForm(request.form)
-    return render_template('register.html', form=form, ps=ps)
+    return render_template('register.html', form=form, ps=ps, load=ps/CAPACITY)
 
 
 @app.route('/register_submit', methods=['GET', 'POST'])
 def register_submit():
-    if request.method == 'POST':
+    ps = photoNum()
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
         user = User(request.form['username'], 0, 1, request.form['password'], request.form['email'], None, 100,
                     'william', 'shot')
         db_session.add(user)
         db_session.commit()
         flash('Your registration was successful.')
         return redirect(url_for('login'))
-    return
+    return render_template('register.html', form=form, ps=ps, load=ps/CAPACITY)
 
 
 @app.route('/logout')
@@ -249,22 +255,20 @@ def logout():
 @app.route('/statistics')
 def statistics():
     ps = photoNum()
+    good_photos = []
     user = getUser(USERNAME)
-    uphotos = getUserPhotos(USERNAME)
-    return render_template('statistics.html', user=user, photos=uphotos, ps=ps)
+    users = User.query.all()
+    photos = Photo.query.all()
+    return render_template('statistics.html', good_photos=good_photos, users=users, photos=photos, user=user, ps=ps, load=ps/CAPACITY)
 
 
 @app.route('/dashboard')
 def dashboard():
-    if not session.get('logged_in'):
-        abort(401)
     ps = photoNum()
     user = getUser(USERNAME)
     flash('Welcome, ' + user.userid + '.')
-    good_photos = []
-    users = User.query.all()
-    photos = Photo.query.all()
-    return render_template('dashboard.html', good_photos=good_photos, users=users, photos=photos, user=user, ps=ps)
+    uphotos = getUserPhotos(USERNAME)
+    return render_template('dashboard.html', user=user, photos=uphotos, ps=ps, load=ps/CAPACITY)
 
 
 #DB querying

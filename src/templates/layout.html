@@ -44,6 +44,28 @@
           -->
 
 
+            <div id="plenModal" class="fade modal" style="display: none; ">
+        <div class='modal-dialog modal-content text-center'>
+            <h3>Grid Capacity</h3>
+
+            <div class="modal-body">
+                The grid allows for 1600 submissions grom 800 locations around Glasgow. {{ ps }} photos have been uploaded:
+                <br><br>
+                <div class="progress progress-striped active">
+  <div class="progress-bar progress-bar-success" style="width: {{ load }}%"></div>
+</div>
+
+                 You can <a href="/upload"><b>upload</b></a> more photos to help fill the map!
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-success glyphicon glyphicon-ok-sign" data-dismiss="modal"></a>
+            </div>
+        </div>
+
+    </div>
+
+
             <ul class="nav navbar-nav navbar-right">
 
                 {% if not session.logged_in %}
@@ -51,7 +73,7 @@
                     <li>
                     <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-registration-mark"></span> Register</a>
                     <li>
-                    <li><button id="pts" class="btn btn-default disabled">Photos: <b>{{ ps }}</b></button>
+                    <li><button id="pts" class="btn btn-default"  data-toggle="modal" href="#plenModal">Photos: <b>{{ ps }}</b>
                     <li>
                         {% else %}
 
@@ -61,7 +83,7 @@
             <h3>Points</h3>
 
             <div class="modal-body">
-                You currently have <b>{{ user.points }}</b> points. You can <a href="/upload">upload</a> more photos to get points.
+                You currently have <b>{{ user.points }}</b> points. You can <a href="/upload"><b>upload</b></a> more photos to get points.
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn btn-success glyphicon glyphicon-ok-sign" data-dismiss="modal"></a>
@@ -73,6 +95,9 @@
 
                     <li><a href="{{ url_for('upload') }}"><span class="glyphicon glyphicon-upload"></span> Upload</a>
                     <li>
+                    <!--
+                    <li><a href="{{ url_for('update') }}"><span class="glyphicon glyphicon-sort"></span> Update</a>
+                    <li> -->
                     <li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-th-list"></span> Dashboard</a>
                     <li>
                     <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
