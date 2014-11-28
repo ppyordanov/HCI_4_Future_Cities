@@ -39,3 +39,8 @@ _The app is running on localhost, port 5000:_
 
 The web application is also available for preview at: 
  * **http://ppyordanov.pythonanywhere.com/**
+
+/AUTHENTICATION/
+
+USER: admin
+PASSWORD: default
