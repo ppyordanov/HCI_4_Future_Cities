@@ -16,7 +16,7 @@ from population import db_population
 from upload import UploadForm
 
 
-UPLOAD_FOLDER = 'static/images/user_data/'
+UPLOAD_FOLDER = './static/images/user_data/'
 ALLOWED_EXTENSIONS = set(['jpg'])
 
 # configuration
