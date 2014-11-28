@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><b>Please log in or <a href="/register">sign up</a></b></h3>
+            </div>
+            <div class="panel-body">
+
+
+    {% macro render_field(field) %}
+        <dt>{{ field.label }}
+        <dd>{{ field(**kwargs)|safe }}
+            {% if field.errors %}
+                <br>
+                <ul class=errors>
+                    {% for error in field.errors %}
+                        <br>
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </dd>
+    {% endmacro %}
+
+    {% from "_formhelpers.html" import render_field %}
+    <form role="form" method=post action="/register_submit">
+        <dl>
+
+
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.confirm) }}
+            {{ render_field(form.accept_tos) }}
+        </dl>
+        <p><button type="submit" value="login" class="btn btn-default">Register</button>
+    </form>
+
+</div></div></div>
+
+{% endblock %}
