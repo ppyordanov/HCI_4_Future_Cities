@@ -1,0 +1,132 @@
+<!doctype html>
+<title>SunnyGlasgow</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bs/css/bootstrap.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<script type=text/javascript href="{{ url_for('static', filename='jquery-2.1.1.js') }}"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../static/flash.js"></script>
+<script type="text/javascript" src="../static/loading.js"></script>
+<script type="text/javascript" src="../static/tabs.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?v=3.8&libraries=geometry&sensor=false"></script>
+
+
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Sunny Glasgow</a>
+        </div>
+
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="/statistics"><span class="glyphicon glyphicon-stats"></span> Statistics</a></li>
+            </ul>
+            <!--
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          -->
+
+
+            <div id="plenModal" class="fade modal" style="display: none; ">
+        <div class='modal-dialog modal-content text-center'>
+            <h3>Grid Capacity</h3>
+
+            <div class="modal-body">
+                The grid allows for 1600 submissions grom 800 locations around Glasgow. {{ ps }} photos have been uploaded:
+                <br><br>
+                <div class="progress progress-striped active">
+  <div class="progress-bar progress-bar-success" style="width: {{ load }}%"></div>
+</div>
+
+                 You can <a href="/upload"><b>upload</b></a> more photos to help fill the map!
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-success glyphicon glyphicon-ok-sign" data-dismiss="modal"></a>
+            </div>
+        </div>
+
+    </div>
+
+
+            <ul class="nav navbar-nav navbar-right">
+
+                {% if not session.logged_in %}
+                    <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Log In</a>
+                    <li>
+                    <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-registration-mark"></span> Register</a>
+                    <li>
+                    <li><button id="pts" class="btn btn-default"  data-toggle="modal" href="#plenModal">Photos: <b>{{ ps }}</b>
+                    <li>
+                        {% else %}
+
+
+                            <div id="homeModal" class="fade modal" style="display: none; ">
+        <div class='modal-dialog modal-content text-center'>
+            <h3>Points</h3>
+
+            <div class="modal-body">
+                You currently have <b>{{ user.points }}</b> points. You can <a href="/upload"><b>upload</b></a> more photos to get points.
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-success glyphicon glyphicon-ok-sign" data-dismiss="modal"></a>
+            </div>
+        </div>
+
+    </div>
+
+
+                    <li><a href="{{ url_for('upload') }}"><span class="glyphicon glyphicon-upload"></span> Upload</a>
+                    <li>
+                    <!--
+                    <li><a href="{{ url_for('update') }}"><span class="glyphicon glyphicon-sort"></span> Update</a>
+                    <li> -->
+                    <li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-th-list"></span> Dashboard</a>
+                    <li>
+                    <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
+                    <li>
+                    <li>    <button id="pts" class="btn btn-default disabled"><b>{{user.userid}}</b>, Rank: <b>{{user.rankid}}</b></button>
+                    <li>
+                    <li>    <button id="pts" class="btn btn-default"  data-toggle="modal" href="#homeModal">Points: <b>{{ user.points }}</b></button>
+                    <li>
+                {% endif %}
+
+
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+
+<div class="container-fluid text-center center">
+
+
+    {% for message in get_flashed_messages() %}
+        <div id="statusmessage">{{ message }}</div>
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+
+
+</div>
+
+
