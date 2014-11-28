@@ -111,6 +111,8 @@ def getUser(UNAME):
 def photoNum():
     return len(Photo.query.all())
 
+def photoExists(ty, sq):
+    return Photo.query.filter_by(square=sq,type=ty)
 
 #views
 @app.route("/")
@@ -179,10 +181,10 @@ def upload_photo():
             file.save(path)
             photo = Photo(title, user.userid, 0, description, path, square,type,weather)
             db_session.add(photo)
-            if action=='Upload':
+            if action=='Upload' and not photoExists(type,square):
                 flash('+50 points. The new photo was successfully posted.')
                 points +=50
-            elif action=='Update':
+            else:
                 flash('+20 points. The new photo was successfully updated.')
                 points +=20
             db_session.query(User).filter_by(userid=USERNAME).update({'points': points})
