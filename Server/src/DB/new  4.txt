@@ -1,1 +1,0 @@
-    content += "<div id='photo' class='modal hide fade'><a type='button' data-dismiss='modal' class='btn btn-default' data-value='1'>OK</a></div>";
