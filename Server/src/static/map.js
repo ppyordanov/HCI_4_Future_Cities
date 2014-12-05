@@ -135,11 +135,11 @@ function metaData(title, description, user, weather){
 
 function modalBox(photo, id){
 
-    var content = "<div class='fade modal' id='modal" + id +"'><div class='modal-dialog modal-content'>";
+    var content = "<div class='fade modal' id='" + id +"'><div class='modal-dialog modal-content'>";
     content += "<div class='modal-content span7 text-center'>";
     content += "<img class='topplusmore myImg' src=" + photo + "></img><br>";
-    content += "<a href='#' rel='tooltip' title='Rate up' class='btn btn-success glyphicon glyphicon-thumbs-up'></a>";
-    content += " <a href='#'  rel='tooltip' title='Rate down' class='btn btn-danger glyphicon glyphicon-thumbs-down'></a>";
+    content += "<a hreg='#' rel='tooltip' title='Rate up' class='btn btn-success glyphicon glyphicon-thumbs-up'></a>";
+    content += " <a hreg='#'  rel='tooltip' title='Rate down' class='btn btn-danger glyphicon glyphicon-thumbs-down'></a>";
     content += " <a href='" + photo + "'  rel='tooltip' download='" + photo +"' title='Download' class='btn btn-primary glyphicon glyphicon-download-alt'></a>";
     content += " <a data-dismiss='modal' class='btn btn-default '>Close</a>";
     content += "</div></div></div>";
@@ -162,7 +162,7 @@ function modalBox(photo, id){
 
 function tooltip(photo, id){
     var content ="";
-    content = "<div class='span7 text-center'><a data-toggle='modal' href='#modal" + id +"' rel='tooltip' title='Preview photo.' class=' glyphicon glyphicon-eye-open btn btn-default'></a> ";
+    content = "<div class='span7 text-center'><a data-toggle='modal' href='#" + id +"' rel='tooltip' title='Preview photo.' class=' glyphicon glyphicon-eye-open btn btn-default'></a> ";
     content += modalBox(photo, id);
     content += "<a href='/update' rel='tooltip' id='update' title='Update photo.' class='glyphicon glyphicon-collapse-up btn btn-default'></a>";
     content += "</div>";
