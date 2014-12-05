@@ -34,6 +34,22 @@ $('#openBtn').click(function(){
 });
 </script>
 
+   {% for photo in photo_list %}
+<div id="modal{{photo.photoid}}" class="fade modal" style="display: none; ">
+            <div class='modal-dialog modal-content'>
+                <h3>Preview Avatar</h3>
+
+                <div class="modal-body">
+                    <img src="{{ user.avatar }}"/>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" rel="tooltip" title="OK" class="btn btn-success glyphicon glyphicon-ok-sign"
+                       data-dismiss="modal"></a>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
 
     <!-- LOADER -->
     <div id="loader"><img src="../static/images/spinner.gif"/></div>

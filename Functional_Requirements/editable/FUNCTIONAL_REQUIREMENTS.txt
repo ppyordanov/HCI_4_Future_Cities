@@ -1,0 +1,65 @@
+Sunny Glasgow Functional Requirements (MoSCoW)
+
+02.11.2014
+
+
+MUST
+
+- photo upload - it is essentiual that users are able to upload photos to the web server
+
+- photo update - users must be able to update photos that have been uploaded from an area; this is to ensure that if a user believes there is a better image that can be used for a particular location (map tile) they can log in/ register and quickly upload it, updating the photo (approved by administrator) 
+
+- map visualization - a must-have is a general visual representation of all of the uploaded photos and their metadata on a map; this will involve creating a grid index structure overlay on the map in order to display the information as efficiently as possible
+
+- display contrasting photos - in order to complete the main goal this project is aiming to (enabling people to share preferrably high-resolution photos from different locations across Glasgow with contrasting weather) photo pairs need to be displayed side by side with their corresponding metadata to facilitate easy browsing and quick comparison (help users to see how beautiful a spot is when the weather is sunny for example, provided there is a contrast photo on a rainy day from the same location)
+
+
+SHOULD
+
+- user registration - users need to be able to authenticate on the website in order to store their personal data and set their preferences, earn points, make achievements, complete challenges, etc.
+
+- administrator dashboard - administrator account must have privileges to remove uncensored photos or ensure that submitted photos have been tagget in the correct way to avoid inaccurate/ irrelevant content
+
+- map tiles - color-coding - there should be a color-coding scheme letting users know how many photos have so far been uploaded for a certain location in order to know which map tiles still "need" to be captured to complete the map
+
+- map content/capacity - users should be able to see current number of uploaded photos in a meaningful way in order to improve the gamification experience further; this means that people will always have a rough estimate of how many photos and from which areas will need to be uploaded to fill in the map and complete the gallery of sunny (and rainy) photos from around Glasgow
+
+
+COULD
+
+- point-based system - the web application also needs a point-based system as a form of incentive to potential users; a newly posted photo will win a user 50 points (for instance) while an update will increase the points in their account by 20
+
+- user account ranks - based on points (uploaded/updated photos), users could change ranks; for example, users with points above and below:
+
+	- 0-50 - NewComer
+	- 50-100 - Junior/ Rookie
+	- 100-500 - Amateur
+	- 500-1000 - Professional
+	- 1000+ - Senior/ SuperUser
+	- and so on
+
+- client application - a mobile device helper application could be a nice feature as it will enable people to interact with the server even more efficiently and in much more flexible ways; the mobile application could include the following features: photo taking functionality to use the integrated phone/tablet/ etc. camera to capture a photo and then an upload functionality to let users log in to their account and quickly upload the photo no matter where they are around the city
+
+
+
+WOULD/ WONT
+
+- photo ratings - it would be a nice feature to enable users to vote for uploaded photos and even decide if a certain photo should update the old one via voting for both (an administrator can then check the vote and do the switch manually or the system could be set to do it automatically after a certain period of time)
+
+- achievements - in order to stimulate users further to use the application, an achievement-based system would also be a nice feature; for example, users who have 50 points can receive a "First Photo" achievement, a photo with a rainbow or a rare weather condition (such as hail) can get the uploader a "Rainbow" achievement or "Sun and Rain" (on the same photo) achievement, etc.
+
+- automatic geo-location tracking - it would be nice if the client application could automatically track user location using mobile device's GPS and map this to a map tile on the grid structure
+
+
+
+Non-Functional Requirements
+
+- the system must be responsive and interactive
+
+- the web application must be easy to use and errors made by users should not be above 5 per hour of usage after the first 30 minutes of practise
+
+- the client must be simple and users' errors after 30 minutes of practise should not exceed 3-4 for an hour of usage
+
+- the web server and the client application should have an optimized user-interface with minimal complexity
+
+- it would be an added bonus/ benefit if the client application was available for multiple operating systems (Windows Phone, etc.)
