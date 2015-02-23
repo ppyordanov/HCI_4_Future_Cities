@@ -36,6 +36,9 @@ CONFIGURATION:
 _The app is running on localhost, port 5000:_
 
  * http://127.0.0.1:5000/
+ * 
+The web application is also available for preview at:
+* **http://ppyordanov.pythonanywhere.com/**
 
 /AUTHENTICATION/
 
